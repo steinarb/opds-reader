@@ -1,0 +1,56 @@
+* Calibre OPDS client
+** What's this?
+This is a calibre plugin that is an OPDS client intended to read the contents of another calibre installation, find the differences to the current calibre and offer to copy books from the other calibre into the current calibre
+* List of TODO items [1/7]
+** DONE Create an icon
+- The plugin API seems to mandate one for a plugin that is to add an action to the GUI
+- Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
+** TODO Put a list of books into the dialog
+ - <2015-08-23 søn 08:50> Will use a [[http://doc.qt.io/qt-5/qtableview.html][QTableView]]
+   - import:
+     #+BEGIN_SRC python
+       from PyQt5.Qt import QTableView
+     #+END_SRC
+   - Tried using the derived class BookView, but this failed because the parent (OpdsDialog) was missing the field iactions
+   - Will try filling the QtTableView with BooksModel which derives from [[http://doc.qt.io/qt-5/qabstracttablemodel.html][QAbstractTableModel]]
+     #+BEGIN_SRC python
+       from calibre.gui2.library.models import BooksModel
+     #+END_SRC
+   - The argument to BooksModel.setData will be a list of SearchResult instances
+     #+BEGIN_SRC python
+       from calibre.gui2.store.search_result import SearchResult
+     #+END_SRC
+   - SearchResult contains the following fields:
+     - store_name
+     - cover_url
+     - cover_data
+     - title
+     - author
+     - price
+     - detail_item
+     - drm
+     - formats
+     - downloads
+       - dictionary
+     - affilate
+       - boolean
+     - plugin_author
+     - create_browser
+   - SearchResult equality is determined in the following way:
+     #+BEGIN_SRC python
+       return self.title == other.title and self.author == other.author and self.store_name == other.store_name and self.formats == other.formats
+     #+END_SRC
+     - The "formats" part of the comparison may be an issue when comparing with the current database? Could be that a comparison that excludes formats may be needed? E.g. I may want to keep ORIGINAL_EPUB in the calibre where I did the conversion, but not bother copying it to other calibres
+   - An example usage of creating a list of SearchResult is in calibre in MobileReadStore.deserialize_books
+** TODO Read RSS from the plugin and put the resulting data into a datastructure compatible with the calibre db API
+ - <2015-08-23 søn 10:17> Will try putting the resulting data into SearchResult initially (as mentioned in the previous TODO item)
+ - <2015-08-23 søn 11:05> The feedparser is already present in calibre
+   - import statement:
+     #+BEGIN_SRC python
+       from calibre.web.feeds.feedparser import parse
+     #+END_SRC
+** TODO Populate the list in the GUI with data read from the RSS
+ - <2015-08-23 søn 10:18> Hopefully this will be as simple as calling BooksModel.setData
+** TODO Add comparison with the database (ie. find the diff)
+** TODO Add a new list to the GUI with books differing from the current database, ordered by date
+** TODO Add an exclusion list (a list of books that should be permanently hidden from the comparison)
