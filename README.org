@@ -1,6 +1,17 @@
 * Calibre OPDS client
 ** What's this?
 This is a calibre plugin that is an OPDS client intended to read the contents of another calibre installation, find the differences to the current calibre and offer to copy books from the other calibre into the current calibre
+** How do I install it?
+Requires git and calibre installed:
+ - Clone the repository:
+   #+BEGIN_EXAMPLE
+     git clone https://github.com/steinarb/opds-reader.git
+   #+END_EXAMPLE
+ - Install the plugin in calibre
+   #+BEGIN_EXAMPLE
+     cd opds-reader
+     calibre-customize -b .
+   #+END_EXAMPLE
 * List of TODO items [4/12]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
