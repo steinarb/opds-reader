@@ -9,7 +9,7 @@ Requires git and calibre installed:
    #+END_EXAMPLE
  - Install the plugin in calibre
    #+BEGIN_EXAMPLE
-     cd opds-reader
+     cd opds-reader/calibre_plugin/
      calibre-customize -b .
    #+END_EXAMPLE
 * List of TODO items [4/12]
