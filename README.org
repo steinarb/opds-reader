@@ -1,7 +1,7 @@
 * Calibre OPDS client
 ** What's this?
 This is a calibre plugin that is an OPDS client intended to read the contents of another calibre installation, find the differences to the current calibre and offer to copy books from the other calibre into the current calibre
-* List of TODO items [4/7]
+* List of TODO items [4/12]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -54,6 +54,11 @@ This is a calibre plugin that is an OPDS client intended to read the contents of
    - Use a new data structure OpdsBook instead of SearchResult
 ** DONE Populate the list in the GUI with data read from the RSS
  - <2015-08-23 søn 10:18> Hopefully this will be as simple as calling BooksModel.setData
+** TODO Make the list of books look a little better (resize the dialog to make room for everything)
+** TODO Add cover thumbnails to the list of books
 ** TODO Add comparison with the database (ie. find the diff)
 ** TODO Add a new list to the GUI with books differing from the current database, ordered by date
+** TODO Add a button to filter out news
+** TODO Add a button to filter out books we already have
+** TODO Add a download button to download the selected books (keep it simple: will download all formats for a book)
 ** TODO Add an exclusion list (a list of books that should be permanently hidden from the comparison)
