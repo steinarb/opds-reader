@@ -12,6 +12,16 @@ Requires git and calibre installed:
      cd opds-reader/calibre_plugin/
      calibre-customize -b .
    #+END_EXAMPLE
+ - Start calibre (if calibre was already running, stop calibre and start it again)
+ - Click the button "Preferences"
+ - In the dialog "calibre - Preferences":
+   - Under "Interface", click on the button "Toolbar"
+   - In the dialog "calibre - Preferences - Toolbar":
+     - In the dropdown, select "The main toolbare"
+     - In "Available actions" scroll down to find "OPDS Client" and select it
+     - Click the top arrow button (arrow pointing right)
+     - Click the "Apply" button
+   - Click the "Close" button
 * List of TODO items [4/12]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
