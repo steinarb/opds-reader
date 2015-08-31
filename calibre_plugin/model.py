@@ -15,6 +15,8 @@ class OpdsBooksModel(QAbstractTableModel):
         return len(self.column_keys)
 
     def data(self, index, role):
+        if role != Qt.DisplayRole:
+            return None
         row, col = index.row(), index.column()
         if row >= len(self.books):
             return None
