@@ -23,7 +23,10 @@ class OpdsDialog(QDialog):
         self.setWindowIcon(icon)
 
         self.library_view = QTableView(self)
-        self.library_view._model = OpdsBooksModel(self.library_view)
+        self.library_view.setModel(OpdsBooksModel(None, self.dummy_books()))
+        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
         self.library_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.layout.addWidget(self.library_view)
 
@@ -61,3 +64,16 @@ class OpdsDialog(QDialog):
     def config(self):
         self.do_user_config(parent=self)
         self.opds_url.setText(prefs['opds_url'])
+
+    def dummy_books(self):
+        dummy_author = ' ' * 40
+        dummy_title = ' ' * 60
+        dummy_updated = ' ' * 20
+        books_list = []
+        for line in range (1, 10):
+            book = {}
+            book[u'author'] = dummy_author
+            book[u'title'] = dummy_title
+            book[u'updated'] = dummy_updated
+            books_list.append(book)
+        return books_list
