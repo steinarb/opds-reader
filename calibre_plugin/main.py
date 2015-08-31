@@ -1,5 +1,5 @@
 import sys
-from PyQt5.Qt import QDialog, QVBoxLayout, QPushButton, QMessageBox, QLabel, QTableView, QHeaderView
+from PyQt5.Qt import QDialog, QVBoxLayout, QPushButton, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
 from calibre.web.feeds import feedparser
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
@@ -24,6 +24,7 @@ class OpdsDialog(QDialog):
 
         self.library_view = QTableView(self)
         self.library_view._model = OpdsBooksModel(self.library_view)
+        self.library_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.layout.addWidget(self.library_view)
 
         self.about_button = QPushButton('About', self)
