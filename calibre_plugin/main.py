@@ -1,5 +1,5 @@
 import sys
-from PyQt5.Qt import QDialog, QVBoxLayout, QPushButton, QMessageBox, QLabel, QTableView
+from PyQt5.Qt import QDialog, QVBoxLayout, QPushButton, QMessageBox, QLabel, QTableView, QHeaderView
 from calibre.web.feeds import feedparser
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
@@ -52,6 +52,10 @@ class OpdsDialog(QDialog):
         newest_feed = feedparser.parse(newest_url)
         newest_model = OpdsBooksModel(None, newest_feed['entries'])
         self.library_view.setModel(newest_model)
+        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+        self.resize(self.sizeHint())
 
     def config(self):
         self.do_user_config(parent=self)
