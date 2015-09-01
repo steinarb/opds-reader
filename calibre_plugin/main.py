@@ -1,5 +1,5 @@
 import sys
-from PyQt5.Qt import QDialog, QVBoxLayout, QPushButton, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
+from PyQt5.Qt import QDialog, QGridLayout, QPushButton, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
 from calibre.web.feeds import feedparser
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
@@ -14,7 +14,7 @@ class OpdsDialog(QDialog):
 
         self.db = gui.current_db
 
-        self.layout = QVBoxLayout()
+        self.layout = QGridLayout()
         self.setLayout(self.layout)
 
         self.opds_url = QLabel(prefs['opds_url'])
@@ -32,19 +32,29 @@ class OpdsDialog(QDialog):
         for rowNumber in range (0, self.library_view.model().rowCount(None)):
             self.library_view.setRowHeight(rowNumber, rowHeight)
         self.library_view.resizeColumnsToContents()
-        self.layout.addWidget(self.library_view)
+        buttonRowColumnNumber = 9
+        self.layout.addWidget(self.library_view, 0, 0, 3, buttonRowColumnNumber + 1)
 
+        buttonColumnWidths = []
         self.about_button = QPushButton('About', self)
         self.about_button.clicked.connect(self.about)
-        self.layout.addWidget(self.about_button)
+        self.layout.addWidget(self.about_button, 3, buttonRowColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(3, buttonRowColumnNumber).sizeHint().width()) 
 
         self.download_opds_button = QPushButton('Download OPDS', self)
         self.download_opds_button.clicked.connect(self.download_opds)
-        self.layout.addWidget(self.download_opds_button)
+        self.layout.addWidget(self.download_opds_button, 4, buttonRowColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(4, buttonRowColumnNumber).sizeHint().width()) 
 
         self.conf_button = QPushButton('Plugin configuration', self)
         self.conf_button.clicked.connect(self.config)
-        self.layout.addWidget(self.conf_button)
+        self.layout.addWidget(self.conf_button, 5, buttonRowColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(5, buttonRowColumnNumber).sizeHint().width()) 
+
+        # Make all columns of the grid layout the same width as the button column
+        buttonColumnWidth = max(buttonColumnWidths)
+        for columnNumber in range(0, buttonRowColumnNumber):
+            self.layout.setColumnMinimumWidth(columnNumber, buttonColumnWidth)
 
         self.resize(self.sizeHint())
 

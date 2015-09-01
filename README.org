@@ -22,7 +22,7 @@ Requires git and calibre installed:
      - Click the top arrow button (arrow pointing right)
      - Click the "Apply" button
    - Click the "Close" button
-* List of TODO items [4/12]
+* List of TODO items [5/12]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -75,7 +75,7 @@ Requires git and calibre installed:
    - Use a new data structure OpdsBook instead of SearchResult
 ** DONE Populate the list in the GUI with data read from the RSS
  - <2015-08-23 søn 10:18> Hopefully this will be as simple as calling BooksModel.setData
-** TODO Make the list of books look a little better (resize the dialog to make room for everything)
+** DONE Make the list of books look a little better (resize the dialog to make room for everything)
 ** TODO Add cover thumbnails to the list of books
 ** TODO Add comparison with the database (ie. find the diff)
 ** TODO Add a new list to the GUI with books differing from the current database, ordered by date
