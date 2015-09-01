@@ -28,6 +28,10 @@ class OpdsDialog(QDialog):
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
         self.library_view.setSelectionBehavior(QAbstractItemView.SelectRows)
+        rowHeight = self.library_view.horizontalHeader().height()
+        for rowNumber in range (0, self.library_view.model().rowCount(None)):
+            self.library_view.setRowHeight(rowNumber, rowHeight)
+        self.library_view.resizeColumnsToContents()
         self.layout.addWidget(self.library_view)
 
         self.about_button = QPushButton('About', self)
