@@ -1,5 +1,5 @@
 import sys
-from PyQt5.Qt import QDialog, QGridLayout, QPushButton, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
+from PyQt5.Qt import QDialog, QGridLayout, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
 from calibre.web.feeds import feedparser
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
@@ -23,7 +23,8 @@ class OpdsDialog(QDialog):
         self.setWindowIcon(icon)
 
         self.library_view = QTableView(self)
-        self.library_view.setModel(OpdsBooksModel(None, self.dummy_books()))
+        self.model = self.dummy_books()
+        self.library_view.setModel(OpdsBooksModel(None, self.model))
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
@@ -34,6 +35,11 @@ class OpdsDialog(QDialog):
         self.library_view.resizeColumnsToContents()
         buttonRowColumnNumber = 9
         self.layout.addWidget(self.library_view, 0, 0, 3, buttonRowColumnNumber + 1)
+
+        self.hideNewsCheckbox = QCheckBox('Hide Newspapers', self)
+        self.hideNewsCheckbox.clicked.connect(self.setHideNewspapers)
+        self.hideNewsCheckbox.setChecked(True)
+        self.layout.addWidget(self.hideNewsCheckbox, 3, 0)
 
         buttonColumnWidths = []
         self.about_button = QPushButton('About', self)
@@ -58,6 +64,9 @@ class OpdsDialog(QDialog):
 
         self.resize(self.sizeHint())
 
+    def setHideNewspapers(self, checked):
+        self.model.setFilterBooksThatAreNewspapers(checked)
+
     def about(self):
         text = get_resources('about.txt')
         QMessageBox.about(self, 'About the OPDS Client plugin', text.decode('utf-8'))
@@ -68,8 +77,9 @@ class OpdsDialog(QDialog):
         newest_url = feed['entries'][0]['links'][0]['href']
         print newest_url
         newest_feed = feedparser.parse(newest_url)
-        newest_model = OpdsBooksModel(None, newest_feed['entries'])
-        self.library_view.setModel(newest_model)
+        self.model = OpdsBooksModel(None, newest_feed['entries'])
+        self.model.setFilterBooksThatAreNewspapers(self.hideNewsCheckbox.isChecked())
+        self.library_view.setModel(self.model)
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
