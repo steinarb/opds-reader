@@ -24,7 +24,7 @@ class OpdsDialog(QDialog):
 
         self.library_view = QTableView(self)
         self.model = self.dummy_books()
-        self.library_view.setModel(OpdsBooksModel(None, self.model))
+        self.library_view.setModel(OpdsBooksModel(None, self.model, self.db))
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
@@ -40,6 +40,11 @@ class OpdsDialog(QDialog):
         self.hideNewsCheckbox.clicked.connect(self.setHideNewspapers)
         self.hideNewsCheckbox.setChecked(True)
         self.layout.addWidget(self.hideNewsCheckbox, 3, 0)
+
+        self.hideBooksAlreadyInLibraryCheckbox = QCheckBox('Hide books already in library', self)
+        self.hideBooksAlreadyInLibraryCheckbox.clicked.connect(self.setHideBooksAlreadyInLibrary)
+        self.hideBooksAlreadyInLibraryCheckbox.setChecked(True)
+        self.layout.addWidget(self.hideBooksAlreadyInLibraryCheckbox, 4, 0)
 
         buttonColumnWidths = []
         self.about_button = QPushButton('About', self)
@@ -67,6 +72,9 @@ class OpdsDialog(QDialog):
     def setHideNewspapers(self, checked):
         self.model.setFilterBooksThatAreNewspapers(checked)
 
+    def setHideBooksAlreadyInLibrary(self, checked):
+        self.model.setFilterBooksThatAreAlreadyInLibrary(checked)
+
     def about(self):
         text = get_resources('about.txt')
         QMessageBox.about(self, 'About the OPDS Client plugin', text.decode('utf-8'))
@@ -77,8 +85,9 @@ class OpdsDialog(QDialog):
         newest_url = feed['entries'][0]['links'][0]['href']
         print newest_url
         newest_feed = feedparser.parse(newest_url)
-        self.model = OpdsBooksModel(None, newest_feed['entries'])
+        self.model = OpdsBooksModel(None, newest_feed['entries'], self.db)
         self.model.setFilterBooksThatAreNewspapers(self.hideNewsCheckbox.isChecked())
+        self.model.setFilterBooksThatAreAlreadyInLibrary(self.hideBooksAlreadyInLibraryCheckbox.isChecked())
         self.library_view.setModel(self.model)
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
