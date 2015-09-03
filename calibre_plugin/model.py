@@ -53,8 +53,6 @@ class OpdsBooksModel(QAbstractTableModel):
     def isFilteredNews(self, book):
         if self.filterBooksThatAreNewspapers:
             tags = self.findTags(book)
-            print 'tags'
-            print tags
             if u'News' in tags:
                 return True
         return False
