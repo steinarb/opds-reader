@@ -3,14 +3,14 @@ from calibre.ebooks.metadata.book.base import Metadata
 
 class OpdsBooksModel(QAbstractTableModel):
     column_headers = [_('Title'), _('Author(s)'), _('Updated')]
-    column_keys = [u'title', u'author', u'updated']
+    booktableColumnCount = 3
     filterBooksThatAreNewspapers = False
     filterBooksThatAreAlreadyInLibrary = False
 
     def __init__(self, parent, books = [], db = None):
         QAbstractTableModel.__init__(self, parent)
         self.db = db
-        self.books = books
+        self.books = self.makeMetadataFromParsedOpds(books)
         self.filterBooks()
 
     def headerData(self, section, orientation, role):
@@ -26,7 +26,7 @@ class OpdsBooksModel(QAbstractTableModel):
         return len(self.filteredBooks)
 
     def columnCount(self, parent):
-        return len(self.column_keys)
+        return self.booktableColumnCount
 
     def data(self, index, role):
         if role != Qt.DisplayRole:
@@ -35,9 +35,15 @@ class OpdsBooksModel(QAbstractTableModel):
         if row >= len(self.filteredBooks):
             return None
         opdsBook = self.filteredBooks[row]
-        if col >= len(self.column_keys):
+        if col >= self.booktableColumnCount:
             return None
-        return opdsBook[self.column_keys[col]]
+        if col == 0:
+            return opdsBook.title
+        if col == 1:
+            return opdsBook.author
+        if col == 2:
+            return opdsBook.timestamp
+        return None
 
     def setFilterBooksThatAreAlreadyInLibrary(self, value):
         if value != self.filterBooksThatAreAlreadyInLibrary:
@@ -60,14 +66,27 @@ class OpdsBooksModel(QAbstractTableModel):
 
     def isFilteredNews(self, book):
         if self.filterBooksThatAreNewspapers:
-            tags = self.findTags(book)
-            if u'News' in tags:
+            if u'News' in book.tags:
                 return True
         return False
 
-    def findTags(self, book):
+    def isFilteredAlreadyInLibrary(self, book):
+        if self.filterBooksThatAreAlreadyInLibrary:
+            return self.db.has_book(book)
+        return False
+
+    def makeMetadataFromParsedOpds(self, books):
+        metadatalist = []
+        for i in range(0, len(books)):
+            metadata = self.opdsToMetadata(books[i])
+            metadatalist.append(metadata)
+        return metadatalist
+
+    def opdsToMetadata(self, opdsBookStructure):
+        metadata = Metadata(opdsBookStructure[u'title'], opdsBookStructure[u'author'])
+        metadata.timestamp = opdsBookStructure[u'updated']
         tags = []
-        summary = book.get(u'summary', u'')
+        summary = opdsBookStructure.get(u'summary', u'')
         summarylines = summary.splitlines()
         for lineno in range(0, len(summarylines)):
             if summarylines[lineno].startswith(u'TAGS: '):
@@ -75,11 +94,6 @@ class OpdsBooksModel(QAbstractTableModel):
                 tagsline = tagsline.replace(u'<br />',u'')
                 tagsline = tagsline.replace(u', ', u',')
                 tags = tagsline.split(u',')
-        return tags
-
-    def isFilteredAlreadyInLibrary(self, book):
-        if self.filterBooksThatAreAlreadyInLibrary:
-            bookmetadata = Metadata(book['title'], book['author'])
-            print bookmetadata
-            return self.db.has_book(bookmetadata)
-        return False
+        metadata.tags = tags
+        metadata.links = opdsBookStructure.get('links', [])
+        return metadata
