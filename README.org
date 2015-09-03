@@ -22,7 +22,7 @@ Requires git and calibre installed:
      - Click the top arrow button (arrow pointing right)
      - Click the "Apply" button
    - Click the "Close" button
-* List of TODO items [7/12]
+* List of TODO items [7/16]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -76,10 +76,14 @@ Requires git and calibre installed:
 ** DONE Populate the list in the GUI with data read from the RSS
  - <2015-08-23 søn 10:18> Hopefully this will be as simple as calling BooksModel.setData
 ** DONE Make the list of books look a little better (resize the dialog to make room for everything)
-** TODO Add cover thumbnails to the list of books
-** TODO Add comparison with the database (ie. find the diff)
-** TODO Add a new list to the GUI with books differing from the current database, ordered by date
 ** DONE Add a checkbox to filter out newspapers
 ** DONE Add a checkbox to filter out books already present in the library
+** TODO Make the main datamodel be a Metadata subclass (add a field to hold the parsed OPDS structure), and parse all available metadata info
 ** TODO Add a download button to download the selected books (keep it simple: will download all formats for a book)
+** TODO Fix line height after updates
+** TODO Move OPDS reading to the model and use the model refresh instead of setting a new model
+** TODO Add licensing information (GPLv3)
+** TODO Migrate own code from underscore separation to camelCase (Python has a camelCase modula/pascal feel to it)
+** TODO Remove all leftover debug trace
+** TODO Add cover thumbnails to the list of books
 ** TODO Add an exclusion list (a list of books that should be permanently hidden from the comparison)
