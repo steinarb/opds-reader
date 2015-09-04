@@ -33,7 +33,7 @@ class OpdsDialog(QDialog):
         for rowNumber in range (0, self.library_view.model().rowCount(None)):
             self.library_view.setRowHeight(rowNumber, rowHeight)
         self.library_view.resizeColumnsToContents()
-        buttonRowColumnNumber = 8
+        buttonRowColumnNumber = 7
         self.layout.addWidget(self.library_view, 0, 0, 3, buttonRowColumnNumber + 1)
 
         self.hideNewsCheckbox = QCheckBox('Hide Newspapers', self)
