@@ -1,5 +1,6 @@
 from PyQt5.Qt import Qt, QAbstractTableModel
 from calibre.ebooks.metadata.book.base import Metadata
+from calibre.web.feeds import feedparser
 
 class OpdsBooksModel(QAbstractTableModel):
     column_headers = [_('Title'), _('Author(s)'), _('Updated')]
@@ -47,6 +48,15 @@ class OpdsBooksModel(QAbstractTableModel):
         if col == 2:
             return opdsBook.timestamp
         return None
+
+    def downloadOpds(self, opdsUrl):
+        feed = feedparser.parse(opdsUrl)
+        print feed
+        newest_url = feed['entries'][0]['links'][0]['href']
+        print newest_url
+        newest_feed = feedparser.parse(newest_url)
+        self.books = self.makeMetadataFromParsedOpds(newest_feed['entries'])
+        self.filterBooks()
 
     def setFilterBooksThatAreAlreadyInLibrary(self, value):
         if value != self.filterBooksThatAreAlreadyInLibrary:

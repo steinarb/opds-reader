@@ -1,6 +1,5 @@
 import sys
 from PyQt5.Qt import Qt, QDialog, QGridLayout, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
-from calibre.web.feeds import feedparser
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
 from calibre_plugins.opds_client.config import prefs
@@ -23,8 +22,8 @@ class OpdsDialog(QDialog):
         self.setWindowIcon(icon)
 
         self.library_view = QTableView(self)
-        self.model = self.dummy_books()
-        self.library_view.setModel(OpdsBooksModel(None, self.model, self.db))
+        self.model = OpdsBooksModel(None, self.dummy_books(), self.db)
+        self.library_view.setModel(self.model)
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
@@ -43,6 +42,10 @@ class OpdsDialog(QDialog):
         self.hideBooksAlreadyInLibraryCheckbox.clicked.connect(self.setHideBooksAlreadyInLibrary)
         self.hideBooksAlreadyInLibraryCheckbox.setChecked(True)
         self.layout.addWidget(self.hideBooksAlreadyInLibraryCheckbox, 4, 0)
+
+        # Let the checkbox initial state control the filtering
+        self.model.setFilterBooksThatAreNewspapers(self.hideNewsCheckbox.isChecked())
+        self.model.setFilterBooksThatAreAlreadyInLibrary(self.hideBooksAlreadyInLibraryCheckbox.isChecked())
 
         buttonColumnWidths = []
         self.about_button = QPushButton('About', self)
@@ -85,15 +88,7 @@ class OpdsDialog(QDialog):
         QMessageBox.about(self, 'About the OPDS Client plugin', text.decode('utf-8'))
 
     def download_opds(self):
-        feed = feedparser.parse(prefs['opds_url'])
-        print feed
-        newest_url = feed['entries'][0]['links'][0]['href']
-        print newest_url
-        newest_feed = feedparser.parse(newest_url)
-        self.model = OpdsBooksModel(None, newest_feed['entries'], self.db)
-        self.model.setFilterBooksThatAreNewspapers(self.hideNewsCheckbox.isChecked())
-        self.model.setFilterBooksThatAreAlreadyInLibrary(self.hideBooksAlreadyInLibraryCheckbox.isChecked())
-        self.library_view.setModel(self.model)
+        self.model.downloadOpds(prefs['opds_url'])
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
