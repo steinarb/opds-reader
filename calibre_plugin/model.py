@@ -29,12 +29,15 @@ class OpdsBooksModel(QAbstractTableModel):
         return self.booktableColumnCount
 
     def data(self, index, role):
-        if role != Qt.DisplayRole:
-            return None
         row, col = index.row(), index.column()
         if row >= len(self.filteredBooks):
             return None
         opdsBook = self.filteredBooks[row]
+        if role == Qt.UserRole:
+            # Return the Metadata object underlying each row
+            return opdsBook
+        if role != Qt.DisplayRole:
+            return None
         if col >= self.booktableColumnCount:
             return None
         if col == 0:
@@ -95,5 +98,17 @@ class OpdsBooksModel(QAbstractTableModel):
                 tagsline = tagsline.replace(u', ', u',')
                 tags = tagsline.split(u',')
         metadata.tags = tags
-        metadata.links = opdsBookStructure.get('links', [])
+        bookDownloadUrls = []
+        links = opdsBookStructure.get('links', [])
+        for i in range(0, len(links)):
+            url = links[i].get('href', '')
+            bookType = links[i].get('type', '')
+            # Skip covers and thumbnails
+            if not bookType.startswith('image/'):
+                # EPUB books are preferred and always put at the head of the list if found
+                if bookType == 'application/epub+zip':
+                    bookDownloadUrls.insert(0, url)
+                else:
+                    bookDownloadUrls.append(url)
+        metadata.links = bookDownloadUrls
         return metadata

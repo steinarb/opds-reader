@@ -1,5 +1,5 @@
 import sys
-from PyQt5.Qt import QDialog, QGridLayout, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
+from PyQt5.Qt import Qt, QDialog, QGridLayout, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
 from calibre.web.feeds import feedparser
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
@@ -33,7 +33,7 @@ class OpdsDialog(QDialog):
         for rowNumber in range (0, self.library_view.model().rowCount(None)):
             self.library_view.setRowHeight(rowNumber, rowHeight)
         self.library_view.resizeColumnsToContents()
-        buttonRowColumnNumber = 9
+        buttonRowColumnNumber = 8
         self.layout.addWidget(self.library_view, 0, 0, 3, buttonRowColumnNumber + 1)
 
         self.hideNewsCheckbox = QCheckBox('Hide Newspapers', self)
@@ -61,6 +61,11 @@ class OpdsDialog(QDialog):
         self.conf_button.clicked.connect(self.config)
         self.layout.addWidget(self.conf_button, 5, buttonRowColumnNumber)
         buttonColumnWidths.append(self.layout.itemAtPosition(5, buttonRowColumnNumber).sizeHint().width()) 
+
+        self.downloadButton = QPushButton('Download selected books', self)
+        self.downloadButton.clicked.connect(self.downloadSelectedBooks)
+        self.layout.addWidget(self.downloadButton, 6, buttonRowColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonRowColumnNumber).sizeHint().width()) 
 
         # Make all columns of the grid layout the same width as the button column
         buttonColumnWidth = max(buttonColumnWidths)
@@ -97,6 +102,20 @@ class OpdsDialog(QDialog):
     def config(self):
         self.do_user_config(parent=self)
         self.opds_url.setText(prefs['opds_url'])
+
+    def downloadSelectedBooks(self):
+        selectionmodel = self.library_view.selectionModel()
+        if selectionmodel.hasSelection():
+            rows = selectionmodel.selectedRows()
+            for i in range(0, len(rows)):
+                book = rows[i].data(Qt.UserRole)
+                self.downloadBook(book)
+
+    def downloadBook(self, book):
+        title = book.title
+        if len(book.links) > 0:
+            print "Downloading: %s" % title
+            self.gui.download_ebook(book.links[0])
 
     def dummy_books(self):
         dummy_author = ' ' * 40
