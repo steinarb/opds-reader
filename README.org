@@ -22,7 +22,7 @@ Requires git and calibre installed:
      - Click the top arrow button (arrow pointing right)
      - Click the "Apply" button
    - Click the "Close" button
-* List of TODO items [9/16]
+* List of TODO items [10/16]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -81,7 +81,7 @@ Requires git and calibre installed:
 ** DONE Make the book datamodel be Metadata (add a field to hold the parsed OPDS structure), and parse all available metadata info
 ** DONE Add a download button to download the selected books
  - <2015-09-04 fre 21:44> Makes a list of all book download links with EPUB first if found and download the first URL in the list
-** TODO Fix line height after updates
+** DONE Fix line height after updates
 ** TODO Move OPDS reading to the model and use the model refresh instead of setting a new model
 ** TODO Add licensing information (GPLv3)
 ** TODO Migrate own code from underscore separation to camelCase (Python has a camelCase modula/pascal feel to it)

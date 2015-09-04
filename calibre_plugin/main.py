@@ -29,9 +29,7 @@ class OpdsDialog(QDialog):
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
         self.library_view.setSelectionBehavior(QAbstractItemView.SelectRows)
-        rowHeight = self.library_view.horizontalHeader().height()
-        for rowNumber in range (0, self.library_view.model().rowCount(None)):
-            self.library_view.setRowHeight(rowNumber, rowHeight)
+        self.resizeAllLibraryViewLinesToHeaderHeight()
         self.library_view.resizeColumnsToContents()
         buttonRowColumnNumber = 7
         self.layout.addWidget(self.library_view, 0, 0, 3, buttonRowColumnNumber + 1)
@@ -76,9 +74,11 @@ class OpdsDialog(QDialog):
 
     def setHideNewspapers(self, checked):
         self.model.setFilterBooksThatAreNewspapers(checked)
+        self.resizeAllLibraryViewLinesToHeaderHeight()
 
     def setHideBooksAlreadyInLibrary(self, checked):
         self.model.setFilterBooksThatAreAlreadyInLibrary(checked)
+        self.resizeAllLibraryViewLinesToHeaderHeight()
 
     def about(self):
         text = get_resources('about.txt')
@@ -97,6 +97,7 @@ class OpdsDialog(QDialog):
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+        self.resizeAllLibraryViewLinesToHeaderHeight()
         self.resize(self.sizeHint())
 
     def config(self):
@@ -129,3 +130,8 @@ class OpdsDialog(QDialog):
             book[u'updated'] = dummy_updated
             books_list.append(book)
         return books_list
+
+    def resizeAllLibraryViewLinesToHeaderHeight(self):
+        rowHeight = self.library_view.horizontalHeader().height()
+        for rowNumber in range (0, self.library_view.model().rowCount(None)):
+            self.library_view.setRowHeight(rowNumber, rowHeight)
