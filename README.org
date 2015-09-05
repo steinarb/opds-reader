@@ -22,7 +22,7 @@ Requires git and calibre installed:
      - Click the top arrow button (arrow pointing right)
      - Click the "Apply" button
    - Click the "Close" button
-* List of TODO items [12/24]
+* List of TODO items [12/29]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -86,6 +86,11 @@ Requires git and calibre installed:
 ** DONE Restore the authors to the OPDS book list
 ** TODO Make sure all of the books in the library are listed
  - <2015-09-05 lør 10:34> Calibre is set up by default to only deliver 30 items
+** TODO Give feedback on the number of OPDS books downloaded
+** TODO Get a display value back for "updated"
+** TODO Set the date/time of the copied book to the date of the original
+** TODO Copy read marks in calibre's reader from the remote
+** TODO Refresh the list as books are downloaded (suppress downloaded books from the list)
 ** TODO Format the book list with different color for alternate lines
 ** TODO Add licensing information (GPLv3) to the to level project
 ** TODO Add licensing and copyright information to all files
