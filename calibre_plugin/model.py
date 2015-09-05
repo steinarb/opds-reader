@@ -53,10 +53,10 @@ class OpdsBooksModel(QAbstractTableModel):
     def downloadOpds(self, opdsUrl):
         feed = feedparser.parse(opdsUrl)
         print feed
-        newest_url = feed.entries[0].links[0].href
-        print newest_url
-        newest_feed = feedparser.parse(newest_url)
-        self.books = self.makeMetadataFromParsedOpds(newest_feed.entries)
+        newestUrl = feed.entries[0].links[0].href
+        print newestUrl
+        newestFeed = feedparser.parse(newestUrl)
+        self.books = self.makeMetadataFromParsedOpds(newestFeed.entries)
         self.filterBooks()
 
     def setFilterBooksThatAreAlreadyInLibrary(self, value):
