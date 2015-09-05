@@ -26,6 +26,7 @@ class OpdsDialog(QDialog):
         self.setWindowIcon(icon)
 
         self.library_view = QTableView(self)
+        self.library_view.setAlternatingRowColors(True)
         self.model = OpdsBooksModel(None, self.dummy_books(), self.db)
         self.library_view.setModel(self.model)
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
