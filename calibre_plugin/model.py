@@ -44,7 +44,8 @@ class OpdsBooksModel(QAbstractTableModel):
         if col == 0:
             return opdsBook.title
         if col == 1:
-            return opdsBook.author
+            print "opdsBook.author: %s" % opdsBook.author
+            return u' & '.join(opdsBook.author)
         if col == 2:
             return opdsBook.timestamp
         return None
@@ -96,7 +97,8 @@ class OpdsBooksModel(QAbstractTableModel):
         return metadatalist
 
     def opdsToMetadata(self, opdsBookStructure):
-        metadata = Metadata(opdsBookStructure[u'title'], opdsBookStructure[u'author'])
+        authors = opdsBookStructure[u'author'].replace(u'& ', u'&')
+        metadata = Metadata(opdsBookStructure[u'title'], authors.split(u'&'))
         metadata.timestamp = opdsBookStructure[u'updated']
         tags = []
         summary = opdsBookStructure.get(u'summary', u'')
