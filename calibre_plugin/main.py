@@ -1,4 +1,5 @@
 import sys
+import datetime
 from PyQt5.Qt import Qt, QDialog, QGridLayout, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
@@ -119,13 +120,12 @@ class OpdsDialog(QDialog):
     def dummy_books(self):
         dummy_author = ' ' * 40
         dummy_title = ' ' * 60
-        dummy_updated = ' ' * 20
         books_list = []
         for line in range (1, 10):
             book = DynamicBook()
             book.author = dummy_author
             book.title = dummy_title
-            book.updated = dummy_updated
+            book.updated = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S+00:00')
             books_list.append(book)
         return books_list
 

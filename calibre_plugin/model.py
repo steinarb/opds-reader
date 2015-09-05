@@ -1,3 +1,4 @@
+import datetime
 from PyQt5.Qt import Qt, QAbstractTableModel
 from calibre.ebooks.metadata.book.base import Metadata
 from calibre.web.feeds import feedparser
@@ -56,7 +57,13 @@ class OpdsBooksModel(QAbstractTableModel):
         newestUrl = feed.entries[0].links[0].href
         print newestUrl
         newestFeed = feedparser.parse(newestUrl)
-        self.books = self.makeMetadataFromParsedOpds(newestFeed.entries)
+        allEntries = newestFeed.entries
+        nextUrl = self.findNextUrl(newestFeed.feed)
+        while nextUrl is not None:
+            nextFeed = feedparser.parse(nextUrl)
+            allEntries = allEntries + nextFeed.entries
+            nextUrl = self.findNextUrl(nextFeed.feed)
+        self.books = self.makeMetadataFromParsedOpds(allEntries)
         self.filterBooks()
 
     def setFilterBooksThatAreAlreadyInLibrary(self, value):
@@ -99,7 +106,7 @@ class OpdsBooksModel(QAbstractTableModel):
     def opdsToMetadata(self, opdsBookStructure):
         authors = opdsBookStructure.author.replace(u'& ', u'&')
         metadata = Metadata(opdsBookStructure.title, authors.split(u'&'))
-        metadata.timestamp = opdsBookStructure.updated
+        metadata.timestamp = datetime.datetime.strptime(opdsBookStructure.updated, '%Y-%m-%dT%H:%M:%S+00:00')
         tags = []
         summary = opdsBookStructure.get(u'summary', u'')
         summarylines = summary.splitlines()
@@ -125,3 +132,10 @@ class OpdsBooksModel(QAbstractTableModel):
                     bookDownloadUrls.append(url)
         metadata.links = bookDownloadUrls
         return metadata
+
+    def findNextUrl(self, feed):
+        for i in range(0, len(feed.links)):
+            link = feed.links[i]
+            if link.rel == u'next':
+                return link.href
+        return None

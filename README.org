@@ -84,8 +84,9 @@ Requires git and calibre installed:
 ** DONE Fix line height after updates
 ** DONE Move OPDS reading to the model and use the model refresh instead of setting a new model
 ** DONE Restore the authors to the OPDS book list
-** TODO Make sure all of the books in the library are listed
+** DONE Make sure all of the books in the library are listed
  - <2015-09-05 lør 10:34> Calibre is set up by default to only deliver 30 items
+ - <2015-09-05 lør 23:20> Following the "next" links of the feed until there are no more "next"
 ** TODO Give feedback on the number of OPDS books downloaded
 ** TODO Get a display value back for "updated"
 ** TODO Set the date/time of the copied book to the date of the original
