@@ -22,7 +22,7 @@ Requires git and calibre installed:
      - Click the top arrow button (arrow pointing right)
      - Click the "Apply" button
    - Click the "Close" button
-* List of TODO items [12/23]
+* List of TODO items [12/24]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -85,11 +85,13 @@ Requires git and calibre installed:
 ** DONE Move OPDS reading to the model and use the model refresh instead of setting a new model
 ** DONE Restore the authors to the OPDS book list
 ** TODO Make sure all of the books in the library are listed
+ - <2015-09-05 lør 10:34> Calibre is set up by default to only deliver 30 items
 ** TODO Format the book list with different color for alternate lines
 ** TODO Add licensing information (GPLv3) to the to level project
 ** TODO Add licensing and copyright information to all files
 ** TODO Explore the documentation format to see if it is relevant to this plugin
 ** TODO Add recently used dropdown to the opds_url configuration
+** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
 ** TODO Add configuration options for defaults for the "hide" checkboxes
 ** TODO Migrate own code from underscore separation to camelCase (Python has a camelCase modula/pascal feel to it)
 ** TODO Remove all leftover debug trace
