@@ -53,10 +53,10 @@ class OpdsBooksModel(QAbstractTableModel):
     def downloadOpds(self, opdsUrl):
         feed = feedparser.parse(opdsUrl)
         print feed
-        newest_url = feed['entries'][0]['links'][0]['href']
+        newest_url = feed.entries[0].links[0].href
         print newest_url
         newest_feed = feedparser.parse(newest_url)
-        self.books = self.makeMetadataFromParsedOpds(newest_feed['entries'])
+        self.books = self.makeMetadataFromParsedOpds(newest_feed.entries)
         self.filterBooks()
 
     def setFilterBooksThatAreAlreadyInLibrary(self, value):
@@ -97,9 +97,9 @@ class OpdsBooksModel(QAbstractTableModel):
         return metadatalist
 
     def opdsToMetadata(self, opdsBookStructure):
-        authors = opdsBookStructure[u'author'].replace(u'& ', u'&')
-        metadata = Metadata(opdsBookStructure[u'title'], authors.split(u'&'))
-        metadata.timestamp = opdsBookStructure[u'updated']
+        authors = opdsBookStructure.author.replace(u'& ', u'&')
+        metadata = Metadata(opdsBookStructure.title, authors.split(u'&'))
+        metadata.timestamp = opdsBookStructure.updated
         tags = []
         summary = opdsBookStructure.get(u'summary', u'')
         summarylines = summary.splitlines()
@@ -117,10 +117,11 @@ class OpdsBooksModel(QAbstractTableModel):
             bookType = links[i].get('type', '')
             # Skip covers and thumbnails
             if not bookType.startswith('image/'):
-                # EPUB books are preferred and always put at the head of the list if found
                 if bookType == 'application/epub+zip':
+                    # EPUB books are preferred and always put at the head of the list if found
                     bookDownloadUrls.insert(0, url)
                 else:
+                    # Formats other than EPUB (eg. AZW), are appended as they are found
                     bookDownloadUrls.append(url)
         metadata.links = bookDownloadUrls
         return metadata

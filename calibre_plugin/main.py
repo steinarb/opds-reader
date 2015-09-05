@@ -4,6 +4,9 @@ from PyQt5.Qt import Qt, QDialog, QGridLayout, QPushButton, QCheckBox, QMessageB
 from calibre_plugins.opds_client.model import OpdsBooksModel
 from calibre_plugins.opds_client.config import prefs
 
+class DynamicBook(dict):
+    pass
+
 class OpdsDialog(QDialog):
 
     def __init__(self, gui, icon, do_user_config):
@@ -119,10 +122,10 @@ class OpdsDialog(QDialog):
         dummy_updated = ' ' * 20
         books_list = []
         for line in range (1, 10):
-            book = {}
-            book[u'author'] = dummy_author
-            book[u'title'] = dummy_title
-            book[u'updated'] = dummy_updated
+            book = DynamicBook()
+            book.author = dummy_author
+            book.title = dummy_title
+            book.updated = dummy_updated
             books_list.append(book)
         return books_list
 
