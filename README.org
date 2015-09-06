@@ -91,7 +91,7 @@ See the LICENSE file for more detail.
 ** DONE Make sure all of the books in the library are listed
  - <2015-09-05 lør 10:34> Calibre is set up by default to only deliver 30 items
  - <2015-09-05 lør 23:20> Following the "next" links of the feed until there are no more "next"
-** TODO Give feedback on the number of OPDS books downloaded
+** DONE Give feedback on the number of OPDS books downloaded
  - <2015-09-06 søn 12:43> Perhaps update the list after each 30 book chunk has been added?
 ** DONE Get a display value back for "updated"
  - <2015-09-06 søn 12:28> The value is back, but now there is a value for the initial empty lines
@@ -148,7 +148,7 @@ See the LICENSE file for more detail.
      : Accept: application/json
      header to the GET, but still got a 404
 ** TODO Copy read marks in calibre's reader from the remote
-** DONE Refresh the list as books are downloaded (suppress downloaded books from the list)
+** TODO Refresh the list as books are downloaded (suppress downloaded books from the list)
 ** DONE Format the book list with different color for alternate lines
 ** DONE Add licensing information (GPLv3) on the project level
 ** TODO Add licensing and copyright information to all files
