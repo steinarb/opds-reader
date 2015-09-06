@@ -22,7 +22,7 @@ Requires git and calibre installed:
      - Click the top arrow button (arrow pointing right)
      - Click the "Apply" button
    - Click the "Close" button
-* List of TODO items [14/29]
+* List of TODO items [14/31]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -89,12 +89,65 @@ Requires git and calibre installed:
  - <2015-09-05 lør 23:20> Following the "next" links of the feed until there are no more "next"
 ** TODO Give feedback on the number of OPDS books downloaded
 ** TODO Get a display value back for "updated"
+** TODO Reverse the order of requested downloads
+ - <2015-09-06 søn 08:12> The idea is that what's started first will finish first and that this will give the same book order in the two calibres
 ** TODO Set the date/time of the copied book to the date of the original
+ - <2015-09-05 lør 23:08> The date returned by "Updated" was the same for all books and the date/time of the last change to the db of the remote calibre
+   - Opened an issue to replace this with the Metadata.timestamp attribute of the book: https://bugs.launchpad.net/bugs/1492651
+ - <2015-09-06 søn 09:25> Use the ajax.py REST API to download the metadata for the remote book
+   - Endpoints are:
+     - /ajax/book/{book_id}/{library_id=None}
+       - Return the metadata of the book as a JSON dictionary.
+       - Query parameters: ?category_urls=true&id_is_uuid=false&device_for_template=None
+     - /ajax/books/{library_id=None}
+       - Return the metadata for the books as a JSON dictionary.
+       - Query parameters: ?ids=all&category_urls=true&id_is_uuid=false&device_for_template=None
+     - /ajax/categories/{library_id=None}
+       - Return the list of top-level categories as a list of dictionaries
+       - Each category has the form:
+         #+BEGIN_SRC json
+           {
+             'name': Display Name,
+             'url': URL that gives the JSON object corresponding to all entries in this category,
+             'icon': URL to icon of this category,
+             'is_category': False for the All Books and Newest categories, True for everything else
+           }
+         #+END_SRC
+     - /ajax/category/{encoded_name}/{library_id=None}
+       - Return a dictionary describing the category specified by name
+       - Query parameters: ?num=100&offset=0&sort=name&sort_order=asc
+       - Response:
+         #+BEGIN_SRC json
+           {
+               'category_name': Category display name,
+               'base_url': Base URL for this category,
+               'total_num': Total numberof items in this category,
+               'offset': The offset for the items returned in this result,
+               'num': The number of items returned in this result,
+               'sort': How the returned items are sorted,
+               'sort_order': asc or desc
+               'subcategories': List of sub categories of this category.
+               'items': List of items in this category,
+           }
+         #+END_SRC
+     - /ajax/books_in/{encoded_category}/{encoded_item}/{library_id=None}
+       - Return the books (as list of ids) present in the specified category
+       - Query parameters: ?num=100&offset=0&sort=title&sort_order=asc&get_additional_fields=
+     - /ajax/search/{library_id=None}
+       - Return the books (as list of ids) matching the specified search query.
+       - Query parameters: ?num=100&offset=0&sort=title&sort_order=asc&query=
+ - <2015-09-06 søn 10:30> Tried using the API
+   - http://edwards.hjemme.lan:8080/ajax/books/ returned a 404
+   - Added an
+     : Accept: application/json
+     header to the GET, but still got a 404
 ** TODO Copy read marks in calibre's reader from the remote
 ** TODO Refresh the list as books are downloaded (suppress downloaded books from the list)
 ** DONE Format the book list with different color for alternate lines
 ** TODO Add licensing information (GPLv3) to the to level project
 ** TODO Add licensing and copyright information to all files
+** TODO Add auto discovery of calibre instances in the LAN
+ - <2015-09-06 søn 11:49> Perhaps use the Bonour protocol? (is this what FBReaderJ uses?)
 ** TODO Explore the documentation format to see if it is relevant to this plugin
 ** TODO Add recently used dropdown to the opds_url configuration
 ** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
