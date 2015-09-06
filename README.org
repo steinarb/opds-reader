@@ -22,7 +22,7 @@ Requires git and calibre installed:
      - Click the top arrow button (arrow pointing right)
      - Click the "Apply" button
    - Click the "Close" button
-* List of TODO items [14/31]
+* List of TODO items [15/31]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -89,7 +89,7 @@ Requires git and calibre installed:
  - <2015-09-05 lør 23:20> Following the "next" links of the feed until there are no more "next"
 ** TODO Give feedback on the number of OPDS books downloaded
 ** TODO Get a display value back for "updated"
-** TODO Reverse the order of requested downloads
+** DONE Reverse the order of requested downloads
  - <2015-09-06 søn 08:12> The idea is that what's started first will finish first and that this will give the same book order in the two calibres
 ** TODO Set the date/time of the copied book to the date of the original
  - <2015-09-05 lør 23:08> The date returned by "Updated" was the same for all books and the date/time of the last change to the db of the remote calibre
