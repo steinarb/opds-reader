@@ -22,7 +22,7 @@ Requires git and calibre installed:
      - Click the top arrow button (arrow pointing right)
      - Click the "Apply" button
    - Click the "Close" button
-* List of TODO items [16/31]
+* List of TODO items [16/34]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -88,6 +88,7 @@ Requires git and calibre installed:
  - <2015-09-05 lør 10:34> Calibre is set up by default to only deliver 30 items
  - <2015-09-05 lør 23:20> Following the "next" links of the feed until there are no more "next"
 ** TODO Give feedback on the number of OPDS books downloaded
+ - <2015-09-06 søn 12:43> Perhaps update the list after each 30 book chunk has been added?
 ** DONE Get a display value back for "updated"
  - <2015-09-06 søn 12:28> The value is back, but now there is a value for the initial empty lines
 ** DONE Reverse the order of requested downloads
@@ -148,11 +149,14 @@ Requires git and calibre installed:
 ** TODO Add licensing information (GPLv3) to the to level project
 ** TODO Add licensing and copyright information to all files
 ** TODO Add auto discovery of calibre instances in the LAN
- - <2015-09-06 søn 11:49> Perhaps use the Bonour protocol? (is this what FBReaderJ uses?)
+ - <2015-09-06 søn 11:49> Perhaps use the Bonjour protocol? (is this what FBReaderJ uses?)
+** TODO Find out why the OPDS reader dialog sometimes disappear after downloading the OPDS
+** TODO Find out why some books (in PDF...?) aren't downloaded
+** TODO Get better matching with existing books (the "Maven cookbook" was already present, but it still showed up)
 ** TODO Explore the documentation format to see if it is relevant to this plugin
+** TODO Add configuration options for defaults for the "hide" checkboxes
 ** TODO Add recently used dropdown to the opds_url configuration
 ** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
-** TODO Add configuration options for defaults for the "hide" checkboxes
 ** TODO Migrate own code from underscore separation to camelCase (Python has a camelCase modula/pascal feel to it)
 ** TODO Remove all leftover debug trace
 ** TODO Add cover thumbnails to the list of books
