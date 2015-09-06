@@ -108,8 +108,8 @@ class OpdsDialog(QDialog):
         selectionmodel = self.library_view.selectionModel()
         if selectionmodel.hasSelection():
             rows = selectionmodel.selectedRows()
-            for i in range(0, len(rows)):
-                book = rows[i].data(Qt.UserRole)
+            for row in rows:
+                book = row.data(Qt.UserRole)
                 self.downloadBook(book)
 
     def downloadBook(self, book):

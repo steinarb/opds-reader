@@ -79,8 +79,7 @@ class OpdsBooksModel(QAbstractTableModel):
     def filterBooks(self):
         self.beginResetModel()
         self.filteredBooks = []
-        for i in range(0, len(self.books)):
-            book = self.books[i]
+        for book in self.books:
             if (not self.isFilteredNews(book)) and (not self.isFilteredAlreadyInLibrary(book)):
                 self.filteredBooks.append(book)
         self.endResetModel()
@@ -98,8 +97,8 @@ class OpdsBooksModel(QAbstractTableModel):
 
     def makeMetadataFromParsedOpds(self, books):
         metadatalist = []
-        for i in range(0, len(books)):
-            metadata = self.opdsToMetadata(books[i])
+        for book in books:
+            metadata = self.opdsToMetadata(book)
             metadatalist.append(metadata)
         return metadatalist
 
@@ -110,18 +109,18 @@ class OpdsBooksModel(QAbstractTableModel):
         tags = []
         summary = opdsBookStructure.get(u'summary', u'')
         summarylines = summary.splitlines()
-        for lineno in range(0, len(summarylines)):
-            if summarylines[lineno].startswith(u'TAGS: '):
-                tagsline = summarylines[lineno].replace(u'TAGS: ', u'')
+        for summaryline in summarylines:
+            if summaryline.startswith(u'TAGS: '):
+                tagsline = summaryline.replace(u'TAGS: ', u'')
                 tagsline = tagsline.replace(u'<br />',u'')
                 tagsline = tagsline.replace(u', ', u',')
                 tags = tagsline.split(u',')
         metadata.tags = tags
         bookDownloadUrls = []
         links = opdsBookStructure.get('links', [])
-        for i in range(0, len(links)):
-            url = links[i].get('href', '')
-            bookType = links[i].get('type', '')
+        for link in links:
+            url = link.get('href', '')
+            bookType = link.get('type', '')
             # Skip covers and thumbnails
             if not bookType.startswith('image/'):
                 if bookType == 'application/epub+zip':
@@ -134,8 +133,7 @@ class OpdsBooksModel(QAbstractTableModel):
         return metadata
 
     def findNextUrl(self, feed):
-        for i in range(0, len(feed.links)):
-            link = feed.links[i]
+        for link in feed.links:
             if link.rel == u'next':
                 return link.href
         return None
