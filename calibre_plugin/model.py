@@ -1,5 +1,5 @@
 import datetime
-from PyQt5.Qt import Qt, QAbstractTableModel
+from PyQt5.Qt import Qt, QAbstractTableModel, QCoreApplication
 from calibre.ebooks.metadata.book.base import Metadata
 from calibre.web.feeds import feedparser
 
@@ -61,11 +61,13 @@ class OpdsBooksModel(QAbstractTableModel):
         newestFeed = feedparser.parse(newestUrl)
         self.books = self.makeMetadataFromParsedOpds(newestFeed.entries)
         self.filterBooks()
+        QCoreApplication.processEvents()
         nextUrl = self.findNextUrl(newestFeed.feed)
         while nextUrl is not None:
             nextFeed = feedparser.parse(nextUrl)
             self.books = self.books + self.makeMetadataFromParsedOpds(nextFeed.entries)
             self.filterBooks()
+            QCoreApplication.processEvents()
             nextUrl = self.findNextUrl(nextFeed.feed)
 
     def setFilterBooksThatAreAlreadyInLibrary(self, value):
