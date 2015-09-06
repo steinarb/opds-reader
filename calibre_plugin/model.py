@@ -59,14 +59,14 @@ class OpdsBooksModel(QAbstractTableModel):
         newestUrl = feed.entries[0].links[0].href
         print newestUrl
         newestFeed = feedparser.parse(newestUrl)
-        allEntries = newestFeed.entries
+        self.books = self.makeMetadataFromParsedOpds(newestFeed.entries)
+        self.filterBooks()
         nextUrl = self.findNextUrl(newestFeed.feed)
         while nextUrl is not None:
             nextFeed = feedparser.parse(nextUrl)
-            allEntries = allEntries + nextFeed.entries
+            self.books = self.books + self.makeMetadataFromParsedOpds(nextFeed.entries)
+            self.filterBooks()
             nextUrl = self.findNextUrl(nextFeed.feed)
-        self.books = self.makeMetadataFromParsedOpds(allEntries)
-        self.filterBooks()
 
     def setFilterBooksThatAreAlreadyInLibrary(self, value):
         if value != self.filterBooksThatAreAlreadyInLibrary:
