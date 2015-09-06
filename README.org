@@ -26,7 +26,7 @@ Requires git and calibre installed:
 This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
 
 See the LICENSE file for more detail.
-* List of TODO items [18/35]
+* List of TODO items [19/35]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -151,7 +151,7 @@ See the LICENSE file for more detail.
 ** TODO Refresh the list as books are downloaded (suppress downloaded books from the list)
 ** DONE Format the book list with different color for alternate lines
 ** DONE Add licensing information (GPLv3) on the project level
-** TODO Add licensing and copyright information to all files
+** DONE Add licensing and copyright information to all files
 ** TODO Add auto discovery of calibre instances in the LAN
  - <2015-09-06 søn 11:49> Perhaps use the Bonjour protocol? (is this what FBReaderJ uses?)
 ** TODO Find out why the OPDS reader dialog sometimes disappear after downloading the OPDS

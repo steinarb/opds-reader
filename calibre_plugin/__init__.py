@@ -1,3 +1,10 @@
+"""main.py: A calibre plugin containing an OPDS client"""
+
+__author__    = "Steinar Bang"
+__copyright__ = "Steinar Bang, 2015"
+__credits__   = ["Steinar Bang"]
+__license__   = "GPL v3"
+
 from calibre.customize import InterfaceActionBase
 
 class OpdsClient(InterfaceActionBase):

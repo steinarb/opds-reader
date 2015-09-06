@@ -1,3 +1,10 @@
+"""main.py: Configuration parameter GUI for a Calibre plugin that can read OPDS feeds"""
+
+__author__    = "Steinar Bang"
+__copyright__ = "Steinar Bang, 2015"
+__credits__   = ["Steinar Bang"]
+__license__   = "GPL v3"
+
 from PyQt5.Qt import QWidget, QHBoxLayout, QLabel, QLineEdit
 
 from calibre.utils.config import JSONConfig

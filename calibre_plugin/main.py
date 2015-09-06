@@ -1,3 +1,10 @@
+"""main.py: A GUI to download an OPDS feed, filter out parts of the results, and download selected books from the feed into the local library"""
+
+__author__    = "Steinar Bang"
+__copyright__ = "Steinar Bang, 2015"
+__credits__   = ["Steinar Bang"]
+__license__   = "GPL v3"
+
 import sys
 import datetime
 from PyQt5.Qt import Qt, QDialog, QGridLayout, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView

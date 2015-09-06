@@ -1,3 +1,10 @@
+"""main.py: GUI initialization for a Calibre plugin implementing an OPDS client"""
+
+__author__    = "Steinar Bang"
+__copyright__ = "Steinar Bang, 2015"
+__credits__   = ["Steinar Bang"]
+__license__   = "GPL v3"
+
 from calibre.gui2.actions import InterfaceAction
 from calibre_plugins.opds_client.main import OpdsDialog
 

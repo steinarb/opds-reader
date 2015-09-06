@@ -4,6 +4,13 @@ calibre_url = "http://edwards.hjemme.lan:8080/opds"
 
 feed = feedparser.parse(calibre_url)
 
+"""main.py: Experimental code using feedparser on OPDS feeds from calibre"""
+
+__author__    = "Steinar Bang"
+__copyright__ = "Steinar Bang, 2015"
+__credits__   = ["Steinar Bang"]
+__license__   = "GPL v3"
+
 print feed.keys()
 newest_url = feed.entries[0].links[0].href
 
