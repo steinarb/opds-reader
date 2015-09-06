@@ -48,6 +48,8 @@ class OpdsBooksModel(QAbstractTableModel):
             print "opdsBook.author: %s" % opdsBook.author
             return u' & '.join(opdsBook.author)
         if col == 2:
+            if opdsBook.timestamp is not None:
+                return opdsBook.timestamp.strftime("%Y-%m-%d %H:%M:%S")
             return opdsBook.timestamp
         return None
 
