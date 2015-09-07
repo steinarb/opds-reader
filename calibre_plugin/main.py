@@ -47,12 +47,12 @@ class OpdsDialog(QDialog):
 
         self.hideNewsCheckbox = QCheckBox('Hide Newspapers', self)
         self.hideNewsCheckbox.clicked.connect(self.setHideNewspapers)
-        self.hideNewsCheckbox.setChecked(True)
+        self.hideNewsCheckbox.setChecked(prefs['hideNewspapers'])
         self.layout.addWidget(self.hideNewsCheckbox, 3, 0)
 
         self.hideBooksAlreadyInLibraryCheckbox = QCheckBox('Hide books already in library', self)
         self.hideBooksAlreadyInLibraryCheckbox.clicked.connect(self.setHideBooksAlreadyInLibrary)
-        self.hideBooksAlreadyInLibraryCheckbox.setChecked(True)
+        self.hideBooksAlreadyInLibraryCheckbox.setChecked(prefs['hideBooksAlreadyInLibrary'])
         self.layout.addWidget(self.hideBooksAlreadyInLibraryCheckbox, 4, 0)
 
         # Let the checkbox initial state control the filtering
@@ -88,10 +88,12 @@ class OpdsDialog(QDialog):
         self.resize(self.sizeHint())
 
     def setHideNewspapers(self, checked):
+        prefs['hideNewspapers'] = checked
         self.model.setFilterBooksThatAreNewspapers(checked)
         self.resizeAllLibraryViewLinesToHeaderHeight()
 
     def setHideBooksAlreadyInLibrary(self, checked):
+        prefs['hideBooksAlreadyInLibrary'] = checked
         self.model.setFilterBooksThatAreAlreadyInLibrary(checked)
         self.resizeAllLibraryViewLinesToHeaderHeight()
 
