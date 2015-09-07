@@ -5,7 +5,7 @@ __copyright__ = "Steinar Bang, 2015"
 __credits__   = ["Steinar Bang"]
 __license__   = "GPL v3"
 
-from PyQt5.Qt import QWidget, QHBoxLayout, QLabel, QLineEdit
+from PyQt5.Qt import QWidget, QGridLayout, QLabel, QLineEdit
 
 from calibre.utils.config import JSONConfig
 
@@ -19,15 +19,15 @@ class ConfigWidget(QWidget):
 
     def __init__(self):
         QWidget.__init__(self)
-        self.layout = QHBoxLayout()
+        self.layout = QGridLayout()
         self.setLayout(self.layout)
 
         self.opdsUrlLabel = QLabel('OPDS URL: ')
-        self.layout.addWidget(self.opdsUrlLabel)
+        self.layout.addWidget(self.opdsUrlLabel, 0, 0)
 
         self.opdsUrlEditor = QLineEdit(self)
         self.opdsUrlEditor.setText(prefs['opds_url'])
-        self.layout.addWidget(self.opdsUrlEditor)
+        self.layout.addWidget(self.opdsUrlEditor, 0, 1)
         self.opdsUrlLabel.setBuddy(self.opdsUrlEditor)
 
     def save_settings(self):
