@@ -26,7 +26,7 @@ Requires git and calibre installed:
 This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
 
 See the LICENSE file for more detail.
-* List of TODO items [19/35]
+* List of TODO items [19/36]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -163,6 +163,7 @@ See the LICENSE file for more detail.
 ** TODO Explore the documentation format to see if it is relevant to this plugin
 ** TODO Add configuration options for defaults for the "hide" checkboxes
 ** TODO Add recently used dropdown to the opds_url configuration
+** TODO Add username/password information to saved opds_url values
 ** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
 ** TODO Migrate own code from underscore separation to camelCase (Python has a camelCase modula/pascal feel to it)
 ** TODO Remove all leftover debug trace
