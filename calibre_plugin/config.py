@@ -22,15 +22,15 @@ class ConfigWidget(QWidget):
         self.layout = QHBoxLayout()
         self.setLayout(self.layout)
 
-        self.label = QLabel('OPDS URL: ')
-        self.layout.addWidget(self.label)
+        self.opdsUrlLabel = QLabel('OPDS URL: ')
+        self.layout.addWidget(self.opdsUrlLabel)
 
-        self.opds_url = QLineEdit(self)
-        self.opds_url.setText(prefs['opds_url'])
-        self.layout.addWidget(self.opds_url)
-        self.label.setBuddy(self.opds_url)
+        self.opdsUrlEditor = QLineEdit(self)
+        self.opdsUrlEditor.setText(prefs['opds_url'])
+        self.layout.addWidget(self.opdsUrlEditor)
+        self.opdsUrlLabel.setBuddy(self.opdsUrlEditor)
 
     def save_settings(self):
-        prefs['opds_url'] = self.opds_url.text()
+        prefs['opds_url'] = self.opdsUrlEditor.text()
 
             
