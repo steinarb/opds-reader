@@ -9,6 +9,11 @@ import datetime
 from PyQt5.Qt import Qt, QAbstractTableModel, QCoreApplication
 from calibre.ebooks.metadata.book.base import Metadata
 from calibre.web.feeds import feedparser
+import urlparse
+import urllib2
+import json
+import re
+
 
 class OpdsBooksModel(QAbstractTableModel):
     column_headers = [_('Title'), _('Author(s)'), _('Updated')]
@@ -62,6 +67,7 @@ class OpdsBooksModel(QAbstractTableModel):
 
     def downloadOpds(self, opdsUrl):
         feed = feedparser.parse(opdsUrl)
+        self.serverHeader = feed.headers['server']
         print feed
         newestUrl = feed.entries[0].links[0].href
         print newestUrl
@@ -76,6 +82,11 @@ class OpdsBooksModel(QAbstractTableModel):
             self.filterBooks()
             QCoreApplication.processEvents()
             nextUrl = self.findNextUrl(nextFeed.feed)
+        if self.isCalibreOpdsServer():
+            self.downloadMetadataUsingCalibreRestApi(opdsUrl)
+
+    def isCalibreOpdsServer(self):
+        return self.serverHeader.startswith('calibre')
 
     def setFilterBooksThatAreAlreadyInLibrary(self, value):
         if value != self.filterBooksThatAreAlreadyInLibrary:
@@ -116,6 +127,7 @@ class OpdsBooksModel(QAbstractTableModel):
     def opdsToMetadata(self, opdsBookStructure):
         authors = opdsBookStructure.author.replace(u'& ', u'&')
         metadata = Metadata(opdsBookStructure.title, authors.split(u'&'))
+        metadata.uuid = opdsBookStructure.id.replace('urn:uuid:', '', 1)
         metadata.timestamp = datetime.datetime.strptime(opdsBookStructure.updated, '%Y-%m-%dT%H:%M:%S+00:00')
         tags = []
         summary = opdsBookStructure.get(u'summary', u'')
@@ -148,3 +160,48 @@ class OpdsBooksModel(QAbstractTableModel):
             if link.rel == u'next':
                 return link.href
         return None
+
+    def downloadMetadataUsingCalibreRestApi(self, opdsUrl):
+        # The "updated" values on the book metadata, in the OPDS returned
+        # by calibre, are unrelated to the books they are returned with:
+        # the "updated" value is the same value for all books metadata,
+        # and this value is the last modified date of the entire calibre
+        # database.
+        #
+        # It is therefore necessary to use the calibre REST API to get
+        # a meaningful timestamp for the books
+        parsedOpdsUrl = urlparse.urlparse(opdsUrl)
+        print 'download metadata using calibre REST API'
+        print parsedOpdsUrl
+        parsedCalibreRestSearchUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', '', '')
+        calibreRestSearchUrl = parsedCalibreRestSearchUrl.geturl()
+        print calibreRestSearchUrl
+        calibreRestSearchResponse = urllib2.urlopen(calibreRestSearchUrl)
+        calibreRestSearchJsonResponse = json.load(calibreRestSearchResponse)
+        print calibreRestSearchJsonResponse
+        getAllIdsArgument = 'num=' + str(calibreRestSearchJsonResponse['total_num']) + '&offset=0'
+        parsedCalibreRestSearchUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', getAllIdsArgument, '').geturl()
+        print parsedCalibreRestSearchUrl
+        calibreRestSearchResponse = urllib2.urlopen(parsedCalibreRestSearchUrl)
+        calibreRestSearchJsonResponse = json.load(calibreRestSearchResponse)
+        bookIds = map(str, calibreRestSearchJsonResponse['book_ids'])
+        bookIdsGetArgument = 'ids=' + ','.join(bookIds)
+        print "number of book_ids %d" % len(bookIds)
+        parsedCalibreRestBooksUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/books', '', bookIdsGetArgument, '')
+        calibreRestBooksResponse = urllib2.urlopen(parsedCalibreRestBooksUrl.geturl())
+        print parsedCalibreRestBooksUrl.geturl()
+        booksDictionary = json.load(calibreRestBooksResponse)
+        self.updateTimestampInMetadata(bookIds, booksDictionary)
+
+    def updateTimestampInMetadata(self, bookIds, booksDictionary):
+        bookMetadataById = {}
+        for bookId in bookIds:
+            bookMetadata = booksDictionary[bookId]
+            uuid = bookMetadata['uuid']
+            bookMetadataById[uuid] = bookMetadata
+        for book in self.books:
+            bookMetadata = bookMetadataById[book.uuid]
+            parsableTimestamp = re.sub('\.[0-9]+\+00:00$', '', bookMetadata['timestamp'])
+            timestamp = datetime.datetime.strptime(parsableTimestamp, '%Y-%m-%dT%H:%M:%S+00:00')
+            book.timestamp = timestamp
+        self.filterBooks()

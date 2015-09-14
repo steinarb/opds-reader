@@ -136,6 +136,7 @@ class OpdsDialog(QDialog):
             book.author = dummy_author
             book.title = dummy_title
             book.updated = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S+00:00')
+            book.id = ''
             books_list.append(book)
         return books_list
 
