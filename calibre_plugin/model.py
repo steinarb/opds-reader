@@ -167,7 +167,13 @@ class OpdsBooksModel(QAbstractTableModel):
         #
         # It is therefore necessary to use the calibre REST API to get
         # a meaningful timestamp for the books
+
+        # Get the base of the web server, from the OPDS URL
         parsedOpdsUrl = urlparse.urlparse(opdsUrl)
+
+        # GET the search URL twice: the first time is to get the total number
+        # of books in the other calibre.  The second GET gets arguments
+        # to retrieve all book ids in the other calibre.
         parsedCalibreRestSearchUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', '', '')
         calibreRestSearchUrl = parsedCalibreRestSearchUrl.geturl()
         calibreRestSearchResponse = urllib2.urlopen(calibreRestSearchUrl)
@@ -177,6 +183,9 @@ class OpdsBooksModel(QAbstractTableModel):
         calibreRestSearchResponse = urllib2.urlopen(parsedCalibreRestSearchUrl)
         calibreRestSearchJsonResponse = json.load(calibreRestSearchResponse)
         bookIds = map(str, calibreRestSearchJsonResponse['book_ids'])
+
+        # Get the metadata for all books by adding the list of
+        # all IDs as a GET argument
         bookIdsGetArgument = 'ids=' + ','.join(bookIds)
         parsedCalibreRestBooksUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/books', '', bookIdsGetArgument, '')
         calibreRestBooksResponse = urllib2.urlopen(parsedCalibreRestBooksUrl.geturl())
