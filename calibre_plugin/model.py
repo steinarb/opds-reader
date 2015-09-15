@@ -201,7 +201,9 @@ class OpdsBooksModel(QAbstractTableModel):
             bookMetadataById[uuid] = bookMetadata
         for book in self.books:
             bookMetadata = bookMetadataById[book.uuid]
-            parsableTimestamp = re.sub('\.[0-9]+\+00:00$', '', bookMetadata['timestamp'])
-            timestamp = datetime.datetime.strptime(parsableTimestamp, '%Y-%m-%dT%H:%M:%S+00:00')
+            rawTimestamp = bookMetadata['timestamp']
+            parsableTimestamp = re.sub('(\.[0-9]+)?\+00:00$', '', rawTimestamp)
+            print "raw: %s  parsable: %s" % (rawTimestamp, parsableTimestamp)
+            timestamp = datetime.datetime.strptime(parsableTimestamp, '%Y-%m-%dT%H:%M:%S')
             book.timestamp = timestamp
         self.filterBooks()
