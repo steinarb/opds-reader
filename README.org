@@ -26,7 +26,7 @@ Requires git and calibre installed:
 This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
 
 See the LICENSE file for more detail.
-* List of TODO items [21/36]
+* List of TODO items [22/37]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -97,7 +97,7 @@ See the LICENSE file for more detail.
  - <2015-09-06 søn 12:28> The value is back, but now there is a value for the initial empty lines
 ** DONE Reverse the order of requested downloads
  - <2015-09-06 søn 08:12> The idea is that what's started first will finish first and that this will give the same book order in the two calibres
-** TODO Set the date/time of the copied book to the date of the original
+** DONE Set the date/time of the copied book to the date of the original
  - <2015-09-05 lør 23:08> The date returned by "Updated" was the same for all books and the date/time of the last change to the db of the remote calibre
    - Opened an issue to replace this with the Metadata.timestamp attribute of the book: https://bugs.launchpad.net/bugs/1492651
  - <2015-09-06 søn 09:25> Use the ajax.py REST API to download the metadata for the remote book
@@ -148,6 +148,10 @@ See the LICENSE file for more detail.
      : Accept: application/json
      header to the GET, but still got a 404
  - <2015-09-14 ma 23:56> Timestamps are now received and placed correctly on the book Metadata objects from the OPDS feed, the downloaded metadata hasn't been updated yet
+ - <2015-09-15 ti 22:47> Added a "Fix timestamps of selection" button that can be clicked after download
+   - I would have preferred to do this automatically, but that would require a callback that could be called after download, and no such callback system exists
+   - The "Fix timestamps of selection" button only works for books that have a single author, the db.find_identical_books() method returns nothing when the metadata has more than one author
+** TODO Make the "Fix timestamps of selection button" work for books with more than one author
 ** TODO Copy read marks in calibre's reader from the remote
 ** TODO Refresh the list as books are downloaded (suppress downloaded books from the list)
 ** DONE Format the book list with different color for alternate lines

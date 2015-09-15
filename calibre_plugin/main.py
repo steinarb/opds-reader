@@ -22,7 +22,7 @@ class OpdsDialog(QDialog):
         self.gui = gui
         self.do_user_config = do_user_config
 
-        self.db = gui.current_db
+        self.db = gui.current_db.new_api
 
         self.layout = QGridLayout()
         self.setLayout(self.layout)
@@ -80,6 +80,11 @@ class OpdsDialog(QDialog):
         self.layout.addWidget(self.downloadButton, 6, buttonRowColumnNumber)
         buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonRowColumnNumber).sizeHint().width()) 
 
+        self.fixTimestampButton = QPushButton('Fix timestamps of selection', self)
+        self.fixTimestampButton.clicked.connect(self.fixBookTimestamps)
+        self.layout.addWidget(self.fixTimestampButton, 7, buttonRowColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(7, buttonRowColumnNumber).sizeHint().width()) 
+
         # Make all columns of the grid layout the same width as the button column
         buttonColumnWidth = max(buttonColumnWidths)
         for columnNumber in range(0, buttonRowColumnNumber):
@@ -122,9 +127,26 @@ class OpdsDialog(QDialog):
                 self.downloadBook(book)
 
     def downloadBook(self, book):
-        title = book.title
         if len(book.links) > 0:
             self.gui.download_ebook(book.links[0])
+
+    def fixBookTimestamps(self):
+        selectionmodel = self.library_view.selectionModel()
+        if selectionmodel.hasSelection():
+            rows = selectionmodel.selectedRows()
+            for row in reversed(rows):
+                book = row.data(Qt.UserRole)
+                self.fixBookTimestamp(book)
+
+    def fixBookTimestamp(self, book):
+        bookTimestamp = book.timestamp
+        identicalBookIds = self.db.find_identical_books(book)
+        bookIdToValMap = {}
+        for identicalBookId in identicalBookIds:
+            bookIdToValMap[identicalBookId] = bookTimestamp
+        if len(bookIdToValMap) < 1:
+            print "Failed to set timestamp of book: %s" % book
+        self.db.set_field('timestamp', bookIdToValMap)
 
     def dummy_books(self):
         dummy_author = ' ' * 40
