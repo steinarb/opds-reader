@@ -124,7 +124,6 @@ class OpdsDialog(QDialog):
     def downloadBook(self, book):
         title = book.title
         if len(book.links) > 0:
-            print "Downloading: %s" % title
             self.gui.download_ebook(book.links[0])
 
     def dummy_books(self):

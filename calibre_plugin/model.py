@@ -57,7 +57,6 @@ class OpdsBooksModel(QAbstractTableModel):
         if col == 0:
             return opdsBook.title
         if col == 1:
-            print "opdsBook.author: %s" % opdsBook.author
             return u' & '.join(opdsBook.author)
         if col == 2:
             if opdsBook.timestamp is not None:
@@ -68,9 +67,7 @@ class OpdsBooksModel(QAbstractTableModel):
     def downloadOpds(self, opdsUrl):
         feed = feedparser.parse(opdsUrl)
         self.serverHeader = feed.headers['server']
-        print feed
         newestUrl = feed.entries[0].links[0].href
-        print newestUrl
         newestFeed = feedparser.parse(newestUrl)
         self.books = self.makeMetadataFromParsedOpds(newestFeed.entries)
         self.filterBooks()
@@ -171,25 +168,18 @@ class OpdsBooksModel(QAbstractTableModel):
         # It is therefore necessary to use the calibre REST API to get
         # a meaningful timestamp for the books
         parsedOpdsUrl = urlparse.urlparse(opdsUrl)
-        print 'download metadata using calibre REST API'
-        print parsedOpdsUrl
         parsedCalibreRestSearchUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', '', '')
         calibreRestSearchUrl = parsedCalibreRestSearchUrl.geturl()
-        print calibreRestSearchUrl
         calibreRestSearchResponse = urllib2.urlopen(calibreRestSearchUrl)
         calibreRestSearchJsonResponse = json.load(calibreRestSearchResponse)
-        print calibreRestSearchJsonResponse
         getAllIdsArgument = 'num=' + str(calibreRestSearchJsonResponse['total_num']) + '&offset=0'
         parsedCalibreRestSearchUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', getAllIdsArgument, '').geturl()
-        print parsedCalibreRestSearchUrl
         calibreRestSearchResponse = urllib2.urlopen(parsedCalibreRestSearchUrl)
         calibreRestSearchJsonResponse = json.load(calibreRestSearchResponse)
         bookIds = map(str, calibreRestSearchJsonResponse['book_ids'])
         bookIdsGetArgument = 'ids=' + ','.join(bookIds)
-        print "number of book_ids %d" % len(bookIds)
         parsedCalibreRestBooksUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/books', '', bookIdsGetArgument, '')
         calibreRestBooksResponse = urllib2.urlopen(parsedCalibreRestBooksUrl.geturl())
-        print parsedCalibreRestBooksUrl.geturl()
         booksDictionary = json.load(calibreRestBooksResponse)
         self.updateTimestampInMetadata(bookIds, booksDictionary)
 
@@ -203,7 +193,6 @@ class OpdsBooksModel(QAbstractTableModel):
             bookMetadata = bookMetadataById[book.uuid]
             rawTimestamp = bookMetadata['timestamp']
             parsableTimestamp = re.sub('(\.[0-9]+)?\+00:00$', '', rawTimestamp)
-            print "raw: %s  parsable: %s" % (rawTimestamp, parsableTimestamp)
             timestamp = datetime.datetime.strptime(parsableTimestamp, '%Y-%m-%dT%H:%M:%S')
             book.timestamp = timestamp
         self.filterBooks()
