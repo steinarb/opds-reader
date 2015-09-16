@@ -113,10 +113,10 @@ See the LICENSE file for more detail.
        - Each category has the form:
          #+BEGIN_SRC json
            {
-             'name': Display Name,
-             'url': URL that gives the JSON object corresponding to all entries in this category,
-             'icon': URL to icon of this category,
-             'is_category': False for the All Books and Newest categories, True for everything else
+             "name": "Display Name",
+             "url": "URL that gives the JSON object corresponding to all entries in this category",
+             "icon": "URL to icon of this category",
+             "is_category": "False for the All Books and Newest categories, True for everything else"
            }
          #+END_SRC
      - /ajax/category/{encoded_name}/{library_id=None}
@@ -125,15 +125,15 @@ See the LICENSE file for more detail.
        - Response:
          #+BEGIN_SRC json
            {
-               'category_name': Category display name,
-               'base_url': Base URL for this category,
-               'total_num': Total numberof items in this category,
-               'offset': The offset for the items returned in this result,
-               'num': The number of items returned in this result,
-               'sort': How the returned items are sorted,
-               'sort_order': asc or desc
-               'subcategories': List of sub categories of this category.
-               'items': List of items in this category,
+               "category_name": "Category display name",
+               "base_url": "Base URL for this category",
+               "total_num": "Total numberof items in this category",
+               "offset": "The offset for the items returned in this result",
+               "num": "The number of items returned in this result",
+               "sort": "How the returned items are sorted",
+               "sort_order": "asc or desc",
+               "subcategories": "List of sub categories of this category.",
+               "items": "List of items in this category"
            }
          #+END_SRC
      - /ajax/books_in/{encoded_category}/{encoded_item}/{library_id=None}
