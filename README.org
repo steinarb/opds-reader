@@ -151,7 +151,7 @@ See the LICENSE file for more detail.
  - <2015-09-15 ti 22:47> Added a "Fix timestamps of selection" button that can be clicked after download
    - I would have preferred to do this automatically, but that would require a callback that could be called after download, and no such callback system exists
    - The "Fix timestamps of selection" button only works for books that have a single author, the db.find_identical_books() method returns nothing when the metadata has more than one author
-** TODO Make the "Fix timestamps of selection button" work for books with more than one author
+** DONE Make the "Fix timestamps of selection button" work for books with more than one author
 ** TODO Copy read marks in calibre's reader from the remote
 ** TODO Refresh the list as books are downloaded (suppress downloaded books from the list)
 ** DONE Format the book list with different color for alternate lines
@@ -171,6 +171,6 @@ See the LICENSE file for more detail.
 ** TODO Add username/password information to saved opds_url values
 ** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
 ** TODO Migrate own code from underscore separation to camelCase (Python has a camelCase modula/pascal feel to it)
-** DONE Remove all leftover debug trace
+** TODO Remove all leftover debug trace
 ** TODO Add cover thumbnails to the list of books
 ** TODO Add an exclusion list (a list of books that should be permanently hidden from the comparison)

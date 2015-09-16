@@ -11,6 +11,7 @@ from PyQt5.Qt import Qt, QDialog, QGridLayout, QPushButton, QCheckBox, QMessageB
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
 from calibre_plugins.opds_client.config import prefs
+from calibre.ebooks.metadata.book.base import Metadata
 
 class DynamicBook(dict):
     pass
@@ -140,13 +141,30 @@ class OpdsDialog(QDialog):
 
     def fixBookTimestamp(self, book):
         bookTimestamp = book.timestamp
-        identicalBookIds = self.db.find_identical_books(book)
+        identicalBookIds = self.findIdenticalBooksForBooksWithMultipleAuthors(book)
         bookIdToValMap = {}
         for identicalBookId in identicalBookIds:
             bookIdToValMap[identicalBookId] = bookTimestamp
         if len(bookIdToValMap) < 1:
             print "Failed to set timestamp of book: %s" % book
         self.db.set_field('timestamp', bookIdToValMap)
+
+    def findIdenticalBooksForBooksWithMultipleAuthors(self, book):
+        authorsList = book.authors
+        print "authorsList: %s" % authorsList
+        if len(authorsList) < 2:
+            return self.db.find_identical_books(book)
+        print "Matching more than one author"
+        # Try matching the authors one by one
+        identicalBookIds = set()
+        for author in authorsList:
+            print "Matching \"%s\", author: %s" % (book.title, author)
+            singleAuthorBook = Metadata(book.title, [author])
+            singleAuthorIdenticalBookIds = self.db.find_identical_books(singleAuthorBook)
+            print "singleAuthorIdenticalBookIds: %s" % singleAuthorIdenticalBookIds
+            identicalBookIds = identicalBookIds.union(singleAuthorIdenticalBookIds)
+        print "identicalBookIds: %s" % identicalBookIds
+        return identicalBookIds
 
     def dummy_books(self):
         dummy_author = ' ' * 40
