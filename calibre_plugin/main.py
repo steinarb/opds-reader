@@ -151,19 +151,14 @@ class OpdsDialog(QDialog):
 
     def findIdenticalBooksForBooksWithMultipleAuthors(self, book):
         authorsList = book.authors
-        print "authorsList: %s" % authorsList
         if len(authorsList) < 2:
             return self.db.find_identical_books(book)
-        print "Matching more than one author"
         # Try matching the authors one by one
         identicalBookIds = set()
         for author in authorsList:
-            print "Matching \"%s\", author: %s" % (book.title, author)
             singleAuthorBook = Metadata(book.title, [author])
             singleAuthorIdenticalBookIds = self.db.find_identical_books(singleAuthorBook)
-            print "singleAuthorIdenticalBookIds: %s" % singleAuthorIdenticalBookIds
             identicalBookIds = identicalBookIds.union(singleAuthorIdenticalBookIds)
-        print "identicalBookIds: %s" % identicalBookIds
         return identicalBookIds
 
     def dummy_books(self):
