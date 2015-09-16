@@ -152,25 +152,25 @@ See the LICENSE file for more detail.
    - I would have preferred to do this automatically, but that would require a callback that could be called after download, and no such callback system exists
    - The "Fix timestamps of selection" button only works for books that have a single author, the db.find_identical_books() method returns nothing when the metadata has more than one author
 ** DONE Make the "Fix timestamps of selection button" work for books with more than one author
-** TODO Copy read marks in calibre's reader from the remote
-** TODO Refresh the list as books are downloaded (suppress downloaded books from the list)
 ** DONE Format the book list with different color for alternate lines
 ** DONE Add licensing information (GPLv3) on the project level
 ** DONE Add licensing and copyright information to all files
+** TODO Add recently used dropdown to the opds_url configuration
+** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
 ** TODO Add auto discovery of calibre instances in the LAN
  - <2015-09-06 søn 11:49> Perhaps use the Bonjour protocol? (is this what FBReaderJ uses?)
 ** TODO Find out why the OPDS reader dialog sometimes disappear after downloading the OPDS
+** TODO Add username/password information to saved opds_url values
+** TODO Migrate own code from underscore separation to camelCase (Python has a camelCase modula/pascal feel to it)
 ** TODO Find out why some books (in PDF...?) aren't downloaded
+** TODO Explore the documentation format to see if it is relevant to this plugin
 ** TODO Try to keep the line length correct during intermediate model updates
  - <2015-09-06 søn 16:10> When updating the book list model after each OPDS chunk, the line heights are wrong
    - They are corrected after the final read but they look a bit silly during the intermediate chunks
 ** TODO Get better matching with existing books (the "Maven cookbook" was already present, but it still showed up)
-** TODO Explore the documentation format to see if it is relevant to this plugin
 ** DONE Add configuration options for defaults for the "hide" checkboxes
-** TODO Add recently used dropdown to the opds_url configuration
-** TODO Add username/password information to saved opds_url values
-** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
-** TODO Migrate own code from underscore separation to camelCase (Python has a camelCase modula/pascal feel to it)
 ** DONE Remove all leftover debug trace
+** TODO Copy read marks in calibre's reader from the remote
+** TODO Refresh the list as books are downloaded (suppress downloaded books from the list)
 ** TODO Add cover thumbnails to the list of books
 ** TODO Add an exclusion list (a list of books that should be permanently hidden from the comparison)
