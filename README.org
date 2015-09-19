@@ -26,7 +26,7 @@ Requires git and calibre installed:
 This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
 
 See the LICENSE file for more detail.
-* List of TODO items [23/37]
+* List of TODO items [23/38]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -157,6 +157,24 @@ See the LICENSE file for more detail.
 ** DONE Add licensing and copyright information to all files
 ** TODO Add recently used dropdown to the opds_url configuration
 ** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
+** TODO Read OPDS feeds other than calibre
+ - <2015-09-18 fr 19:01> Some examples
+   - feedbooks:
+     : http://www.feedbooks.com/books/top.atom?category=FBFIC028000&lang=en
+     or
+     : http://www.feedbooks.com/catalog.atom
+   - Internet archive:
+     : http://bookserver.archive.org/catalog/
+   - Pragmatic bookshelf:
+     : http://pragprog.com/magazines.opds
+   - ManyBooks:
+     : http://www.manybooks.net/opds/index.php
+   - Project Gutenberg:
+     : http://m.gutenberg.org/ebooks/?format=opds
+   - O'Reilly:
+     : http://opds.oreilly.com/opds/
+   - Baen ebooks:
+     : http://www.baenebooks.com/stanza.aspx
 ** TODO Add auto discovery of calibre instances in the LAN
  - <2015-09-06 søn 11:49> Perhaps use the Bonjour protocol? (is this what FBReaderJ uses?)
 ** TODO Find out why the OPDS reader dialog sometimes disappear after downloading the OPDS
