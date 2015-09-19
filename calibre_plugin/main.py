@@ -28,8 +28,6 @@ class OpdsDialog(QDialog):
         self.layout = QGridLayout()
         self.setLayout(self.layout)
 
-        self.opds_url = QLabel(prefs['opds_url'])
-
         self.setWindowTitle('OPDS Client')
         self.setWindowIcon(icon)
 
@@ -108,7 +106,7 @@ class OpdsDialog(QDialog):
         QMessageBox.about(self, 'About the OPDS Client plugin', text.decode('utf-8'))
 
     def download_opds(self):
-        self.model.downloadOpds(prefs['opds_url'])
+        self.model.downloadOpds(next(iter(prefs['opds_url']), ''))
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
@@ -117,7 +115,6 @@ class OpdsDialog(QDialog):
 
     def config(self):
         self.do_user_config(parent=self)
-        self.opds_url.setText(prefs['opds_url'])
 
     def downloadSelectedBooks(self):
         selectionmodel = self.library_view.selectionModel()

@@ -5,13 +5,13 @@ __copyright__ = "Steinar Bang, 2015"
 __credits__   = ["Steinar Bang"]
 __license__   = "GPL v3"
 
-from PyQt5.Qt import QWidget, QGridLayout, QLabel, QLineEdit, QCheckBox
+from PyQt5.Qt import QWidget, QGridLayout, QLabel, QComboBox, QCheckBox
 
 from calibre.utils.config import JSONConfig
 
 prefs = JSONConfig('plugins/opds_client')
 
-prefs.defaults['opds_url'] = 'http://localhost:8080/opds'
+prefs.defaults['opds_url'] = ['http://localhost:8080/opds']
 prefs.defaults['hideNewspapers'] = True
 prefs.defaults['hideBooksAlreadyInLibrary'] = True
 
@@ -27,8 +27,17 @@ class ConfigWidget(QWidget):
         self.layout.addWidget(self.opdsUrlLabel, 0, 0)
         labelColumnWidths.append(self.layout.itemAtPosition(0, 0).sizeHint().width())
 
-        self.opdsUrlEditor = QLineEdit(self)
-        self.opdsUrlEditor.setText(prefs['opds_url'])
+        print type(prefs.defaults['opds_url'])
+        print type(prefs['opds_url'])
+        if type(prefs['opds_url']) != type(prefs.defaults['opds_url']):
+            # Upgrade config option from single string to list of strings
+            originalUrl = prefs['opds_url']
+            prefs['opds_url'] = prefs.defaults['opds_url']
+            prefs['opds_url'].insert(0, originalUrl)
+        self.opdsUrlEditor = QComboBox(self)
+        self.opdsUrlEditor.addItems(prefs['opds_url'])
+        self.opdsUrlEditor.setEditable(True)
+        self.opdsUrlEditor.setInsertPolicy(QComboBox.InsertAtTop)
         self.layout.addWidget(self.opdsUrlEditor, 0, 1)
         self.opdsUrlLabel.setBuddy(self.opdsUrlEditor)
 
@@ -46,8 +55,17 @@ class ConfigWidget(QWidget):
         self.layout.setColumnMinimumWidth(1, labelColumnWidth * 2)
 
     def save_settings(self):
-        prefs['opds_url'] = self.opdsUrlEditor.text()
         prefs['hideNewspapers'] = self.hideNewsCheckbox.isChecked()
         prefs['hideBooksAlreadyInLibrary'] = self.hideBooksAlreadyInLibraryCheckbox.isChecked()
-
-            
+        opdsUrls = []
+        print "item count: %d" % self.opdsUrlEditor.count()
+        for i in range(self.opdsUrlEditor.count()):
+            print "item %d: %s" % (i, self.opdsUrlEditor.itemText(i))
+            opdsUrls.append(self.opdsUrlEditor.itemText(i))
+        # Move the selected item first in the list
+        currentSelectedUrlIndex = self.opdsUrlEditor.currentIndex()
+        if currentSelectedUrlIndex > 0:
+            currentUrl = opdsUrls[currentSelectedUrlIndex]
+            del opdsUrls[currentSelectedUrlIndex]
+            opdsUrls.insert(0, currentUrl)
+        prefs['opds_url'] = opdsUrls

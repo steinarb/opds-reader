@@ -26,7 +26,7 @@ Requires git and calibre installed:
 This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
 
 See the LICENSE file for more detail.
-* List of TODO items [23/38]
+* List of TODO items [24/38]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -155,7 +155,7 @@ See the LICENSE file for more detail.
 ** DONE Format the book list with different color for alternate lines
 ** DONE Add licensing information (GPLv3) on the project level
 ** DONE Add licensing and copyright information to all files
-** TODO Add recently used dropdown to the opds_url configuration
+** DONE Add recently used dropdown to the opds_url configuration
 ** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
 ** TODO Read OPDS feeds other than calibre
  - <2015-09-18 fr 19:01> Some examples
