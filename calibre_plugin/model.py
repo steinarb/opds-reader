@@ -8,6 +8,7 @@ __license__   = "GPL v3"
 import datetime
 from PyQt5.Qt import Qt, QAbstractTableModel, QCoreApplication
 from calibre.ebooks.metadata.book.base import Metadata
+from calibre.gui2 import error_dialog
 from calibre.web.feeds import feedparser
 import urlparse
 import urllib2
@@ -64,8 +65,15 @@ class OpdsBooksModel(QAbstractTableModel):
             return opdsBook.timestamp
         return None
 
-    def downloadOpds(self, opdsUrl):
+    def downloadOpds(self, gui, opdsUrl):
         feed = feedparser.parse(opdsUrl)
+        if 'bozo_exception' in feed:
+            exception = feed['bozo_exception']
+            message = 'Failed opening the OPDS URL ' + opdsUrl + ': '
+            reason = ''
+            if hasattr(exception, 'reason') :
+                reason = str(exception.reason)
+            return error_dialog(gui, _('Failed opening OPDS URL'), message, reason).exec_()
         self.serverHeader = feed.headers['server']
         newestUrl = feed.entries[0].links[0].href
         newestFeed = feedparser.parse(newestUrl)

@@ -106,7 +106,7 @@ class OpdsDialog(QDialog):
         QMessageBox.about(self, 'About the OPDS Client plugin', text.decode('utf-8'))
 
     def download_opds(self):
-        self.model.downloadOpds(next(iter(prefs['opds_url']), ''))
+        self.model.downloadOpds(self.gui, next(iter(prefs['opds_url']), ''))
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
