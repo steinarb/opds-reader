@@ -1,3 +1,5 @@
+-*- coding: utf-8 -*-
+
 * Calibre OPDS client
 ** What's this?
 This is a calibre plugin that is an OPDS client intended to read the contents of another calibre installation, find the differences to the current calibre and offer to copy books from the other calibre into the current calibre
