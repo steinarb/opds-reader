@@ -57,15 +57,18 @@ class ConfigWidget(QWidget):
     def save_settings(self):
         prefs['hideNewspapers'] = self.hideNewsCheckbox.isChecked()
         prefs['hideBooksAlreadyInLibrary'] = self.hideBooksAlreadyInLibraryCheckbox.isChecked()
+        prefs['opds_url'] = self.saveOpdsUrlCombobox(self.opdsUrlEditor)
+
+    def saveOpdsUrlCombobox(self, opdsUrlEditor):
         opdsUrls = []
-        print "item count: %d" % self.opdsUrlEditor.count()
-        for i in range(self.opdsUrlEditor.count()):
-            print "item %d: %s" % (i, self.opdsUrlEditor.itemText(i))
-            opdsUrls.append(self.opdsUrlEditor.itemText(i))
+        print "item count: %d" % opdsUrlEditor.count()
+        for i in range(opdsUrlEditor.count()):
+            print "item %d: %s" % (i, opdsUrlEditor.itemText(i))
+            opdsUrls.append(opdsUrlEditor.itemText(i))
         # Move the selected item first in the list
-        currentSelectedUrlIndex = self.opdsUrlEditor.currentIndex()
+        currentSelectedUrlIndex = opdsUrlEditor.currentIndex()
         if currentSelectedUrlIndex > 0:
             currentUrl = opdsUrls[currentSelectedUrlIndex]
             del opdsUrls[currentSelectedUrlIndex]
             opdsUrls.insert(0, currentUrl)
-        prefs['opds_url'] = opdsUrls
+        return opdsUrls
