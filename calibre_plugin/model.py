@@ -65,7 +65,7 @@ class OpdsBooksModel(QAbstractTableModel):
             return opdsBook.timestamp
         return None
 
-    def downloadOpds(self, gui, opdsUrl):
+    def downloadOpdsRootCatalog(self, gui, opdsUrl):
         feed = feedparser.parse(opdsUrl)
         if 'bozo_exception' in feed:
             exception = feed['bozo_exception']
@@ -75,20 +75,33 @@ class OpdsBooksModel(QAbstractTableModel):
                 reason = str(exception.reason)
             return error_dialog(gui, _('Failed opening the OPDS URL'), message, reason).exec_()
         self.serverHeader = feed.headers['server']
-        newestUrl = feed.entries[0].links[0].href
-        newestFeed = feedparser.parse(newestUrl)
-        self.books = self.makeMetadataFromParsedOpds(newestFeed.entries)
+        print "serverHeader: %s" % self.serverHeader
+        print "feed.entries: %s" % feed.entries
+        catalogEntries = {}
+        firstTitle = None
+        for entry in feed.entries:
+            title = entry.get('title', 'No title')
+            if firstTitle is None:
+                firstTitle = title
+            links = entry.get('links', [])
+            firstLink = next(iter(links), None)
+            if firstLink is not None:
+                print "firstLink: %s" % firstLink
+                catalogEntries[title] = firstLink.href
+        return (firstTitle, catalogEntries)
+
+    def downloadOpdsCatalog(self, gui, opdsCatalogUrl):
+        opdsCatalogFeed = feedparser.parse(opdsCatalogUrl)
+        self.books = self.makeMetadataFromParsedOpds(opdsCatalogFeed.entries)
         self.filterBooks()
         QCoreApplication.processEvents()
-        nextUrl = self.findNextUrl(newestFeed.feed)
+        nextUrl = self.findNextUrl(opdsCatalogFeed.feed)
         while nextUrl is not None:
             nextFeed = feedparser.parse(nextUrl)
             self.books = self.books + self.makeMetadataFromParsedOpds(nextFeed.entries)
             self.filterBooks()
             QCoreApplication.processEvents()
             nextUrl = self.findNextUrl(nextFeed.feed)
-        if self.isCalibreOpdsServer():
-            self.downloadMetadataUsingCalibreRestApi(opdsUrl)
 
     def isCalibreOpdsServer(self):
         return self.serverHeader.startswith('calibre')
