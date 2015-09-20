@@ -29,7 +29,7 @@ class ConfigWidget(QWidget):
 
         print type(prefs.defaults['opds_url'])
         print type(prefs['opds_url'])
-        self.convertSingleStringOpdsUrlPreferenceToListOfStringsPreference()
+        convertSingleStringOpdsUrlPreferenceToListOfStringsPreference()
         self.opdsUrlEditor = QComboBox(self)
         self.opdsUrlEditor.addItems(prefs['opds_url'])
         self.opdsUrlEditor.setEditable(True)
@@ -53,25 +53,25 @@ class ConfigWidget(QWidget):
     def save_settings(self):
         prefs['hideNewspapers'] = self.hideNewsCheckbox.isChecked()
         prefs['hideBooksAlreadyInLibrary'] = self.hideBooksAlreadyInLibraryCheckbox.isChecked()
-        prefs['opds_url'] = self.saveOpdsUrlCombobox(self.opdsUrlEditor)
+        prefs['opds_url'] = saveOpdsUrlCombobox(self.opdsUrlEditor)
 
-    def saveOpdsUrlCombobox(self, opdsUrlEditor):
-        opdsUrls = []
-        print "item count: %d" % opdsUrlEditor.count()
-        for i in range(opdsUrlEditor.count()):
-            print "item %d: %s" % (i, opdsUrlEditor.itemText(i))
-            opdsUrls.append(opdsUrlEditor.itemText(i))
-        # Move the selected item first in the list
-        currentSelectedUrlIndex = opdsUrlEditor.currentIndex()
-        if currentSelectedUrlIndex > 0:
-            currentUrl = opdsUrls[currentSelectedUrlIndex]
-            del opdsUrls[currentSelectedUrlIndex]
-            opdsUrls.insert(0, currentUrl)
-        return opdsUrls
+def saveOpdsUrlCombobox(opdsUrlEditor):
+    opdsUrls = []
+    print "item count: %d" % opdsUrlEditor.count()
+    for i in range(opdsUrlEditor.count()):
+        print "item %d: %s" % (i, opdsUrlEditor.itemText(i))
+        opdsUrls.append(opdsUrlEditor.itemText(i))
+    # Move the selected item first in the list
+    currentSelectedUrlIndex = opdsUrlEditor.currentIndex()
+    if currentSelectedUrlIndex > 0:
+        currentUrl = opdsUrls[currentSelectedUrlIndex]
+        del opdsUrls[currentSelectedUrlIndex]
+        opdsUrls.insert(0, currentUrl)
+    return opdsUrls
 
-    def convertSingleStringOpdsUrlPreferenceToListOfStringsPreference(self):
-        if type(prefs['opds_url']) != type(prefs.defaults['opds_url']):
-            # Upgrade config option from single string to list of strings
-            originalUrl = prefs['opds_url']
-            prefs['opds_url'] = prefs.defaults['opds_url']
-            prefs['opds_url'].insert(0, originalUrl)
+def convertSingleStringOpdsUrlPreferenceToListOfStringsPreference():
+    if type(prefs['opds_url']) != type(prefs.defaults['opds_url']):
+        # Upgrade config option from single string to list of strings
+        originalUrl = prefs['opds_url']
+        prefs['opds_url'] = prefs.defaults['opds_url']
+        prefs['opds_url'].insert(0, originalUrl)
