@@ -29,11 +29,7 @@ class ConfigWidget(QWidget):
 
         print type(prefs.defaults['opds_url'])
         print type(prefs['opds_url'])
-        if type(prefs['opds_url']) != type(prefs.defaults['opds_url']):
-            # Upgrade config option from single string to list of strings
-            originalUrl = prefs['opds_url']
-            prefs['opds_url'] = prefs.defaults['opds_url']
-            prefs['opds_url'].insert(0, originalUrl)
+        self.convertSingleStringOpdsUrlPreferenceToListOfStringsPreference()
         self.opdsUrlEditor = QComboBox(self)
         self.opdsUrlEditor.addItems(prefs['opds_url'])
         self.opdsUrlEditor.setEditable(True)
@@ -72,3 +68,10 @@ class ConfigWidget(QWidget):
             del opdsUrls[currentSelectedUrlIndex]
             opdsUrls.insert(0, currentUrl)
         return opdsUrls
+
+    def convertSingleStringOpdsUrlPreferenceToListOfStringsPreference(self):
+        if type(prefs['opds_url']) != type(prefs.defaults['opds_url']):
+            # Upgrade config option from single string to list of strings
+            originalUrl = prefs['opds_url']
+            prefs['opds_url'] = prefs.defaults['opds_url']
+            prefs['opds_url'].insert(0, originalUrl)
