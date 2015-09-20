@@ -65,7 +65,7 @@ class OpdsBooksModel(QAbstractTableModel):
             return opdsBook.timestamp
         return None
 
-    def downloadOpdsRootCatalog(self, gui, opdsUrl):
+    def downloadOpdsRootCatalog(self, gui, opdsUrl, displayDialogOnErrors):
         feed = feedparser.parse(opdsUrl)
         if 'bozo_exception' in feed:
             exception = feed['bozo_exception']
@@ -73,7 +73,7 @@ class OpdsBooksModel(QAbstractTableModel):
             reason = ''
             if hasattr(exception, 'reason') :
                 reason = str(exception.reason)
-            return error_dialog(gui, _('Failed opening the OPDS URL'), message, reason).exec_()
+            return error_dialog(gui, _('Failed opening the OPDS URL'), message, reason, displayDialogOnErrors)
         self.serverHeader = feed.headers['server']
         print "serverHeader: %s" % self.serverHeader
         print "feed.entries: %s" % feed.entries

@@ -107,7 +107,7 @@ class OpdsDialog(QDialog):
 
     def download_opds(self):
         opdsRootCatalogUrl = next(iter(prefs['opds_url']), '')
-        catalogsTuple = self.model.downloadOpdsRootCatalog(self.gui, opdsRootCatalogUrl)
+        catalogsTuple = self.model.downloadOpdsRootCatalog(self.gui, opdsRootCatalogUrl, True)
         firstCatalogTitle = catalogsTuple[0]
         catalogs = catalogsTuple[1] # A dictionary of title->feedURL
         if len(catalogs) < 1:
