@@ -26,7 +26,7 @@ Requires git and calibre installed:
 This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
 
 See the LICENSE file for more detail.
-* List of TODO items [24/38]
+* List of TODO items [23/39]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -157,6 +157,7 @@ See the LICENSE file for more detail.
 ** DONE Add licensing and copyright information to all files
 ** DONE Add recently used dropdown to the opds_url configuration
 ** TODO Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
+** TODO Add search in downloaded results
 ** TODO Read OPDS feeds other than calibre
  - <2015-09-18 fr 19:01> Some examples
    - feedbooks:
@@ -187,7 +188,7 @@ See the LICENSE file for more detail.
    - They are corrected after the final read but they look a bit silly during the intermediate chunks
 ** TODO Get better matching with existing books (the "Maven cookbook" was already present, but it still showed up)
 ** DONE Add configuration options for defaults for the "hide" checkboxes
-** DONE Remove all leftover debug trace
+** TODO Remove all leftover debug trace
 ** TODO Copy read marks in calibre's reader from the remote
 ** TODO Refresh the list as books are downloaded (suppress downloaded books from the list)
 ** TODO Add cover thumbnails to the list of books
