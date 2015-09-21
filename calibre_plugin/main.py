@@ -106,20 +106,15 @@ class OpdsDialog(QDialog):
         self.model.setFilterBooksThatAreNewspapers(self.hideNewsCheckbox.isChecked())
         self.model.setFilterBooksThatAreAlreadyInLibrary(self.hideBooksAlreadyInLibraryCheckbox.isChecked())
 
-        self.conf_button = QPushButton('Plugin configuration', self)
-        self.conf_button.clicked.connect(self.config)
-        self.layout.addWidget(self.conf_button, 5, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(5, buttonColumnNumber).sizeHint().width()) 
-
         self.downloadButton = QPushButton('Download selected books', self)
         self.downloadButton.clicked.connect(self.downloadSelectedBooks)
-        self.layout.addWidget(self.downloadButton, 6, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.downloadButton, 5, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(5, buttonColumnNumber).sizeHint().width()) 
 
         self.fixTimestampButton = QPushButton('Fix timestamps of selection', self)
         self.fixTimestampButton.clicked.connect(self.fixBookTimestamps)
-        self.layout.addWidget(self.fixTimestampButton, 7, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(7, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.fixTimestampButton, 6, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonColumnNumber).sizeHint().width()) 
 
         # Make all columns of the grid layout the same width as the button column
         buttonColumnWidth = max(buttonColumnWidths)
