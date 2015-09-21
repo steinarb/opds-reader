@@ -73,7 +73,8 @@ class OpdsBooksModel(QAbstractTableModel):
             reason = ''
             if hasattr(exception, 'reason') :
                 reason = str(exception.reason)
-            return error_dialog(gui, _('Failed opening the OPDS URL'), message, reason, displayDialogOnErrors)
+            error_dialog(gui, _('Failed opening the OPDS URL'), message, reason, displayDialogOnErrors)
+            return (None, {})
         self.serverHeader = feed.headers['server']
         print "serverHeader: %s" % self.serverHeader
         print "feed.entries: %s" % feed.entries

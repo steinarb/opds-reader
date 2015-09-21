@@ -7,7 +7,7 @@ __license__   = "GPL v3"
 
 import sys
 import datetime
-from PyQt5.Qt import Qt, QDialog, QGridLayout, QComboBox, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
+from PyQt5.Qt import Qt, QDialog, QGridLayout, QComboBox, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView, QStringListModel
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
 from calibre_plugins.opds_client.config import prefs
@@ -26,6 +26,9 @@ class OpdsDialog(QDialog):
         self.do_user_config = do_user_config
 
         self.db = gui.current_db.new_api
+
+        # The model for the book list
+        self.model = OpdsBooksModel(None, self.dummy_books(), self.db)
 
         self.layout = QGridLayout()
         self.setLayout(self.layout)
@@ -48,9 +51,26 @@ class OpdsDialog(QDialog):
         self.layout.addWidget(self.opdsUrlEditor, 0, 1, 1, 3)
         self.opdsUrlLabel.setBuddy(self.opdsUrlEditor)
 
+        # Initially download the catalogs found in the root catalog of the URL
+        # selected at startup.  Fail quietly on failing to open the URL
+        catalogsTuple = self.model.downloadOpdsRootCatalog(self.gui, self.opdsUrlEditor.currentText(), False)
+        print catalogsTuple
+        firstCatalogTitle = catalogsTuple[0]
+        self.currentOpdsCatalogs = catalogsTuple[1] # A dictionary of title->feedURL
+
+        self.opdsCatalogSelectorLabel = QLabel('OPDS Catalog:')
+        self.layout.addWidget(self.opdsCatalogSelectorLabel, 1, 0)
+        labelColumnWidths.append(self.layout.itemAtPosition(1, 0).sizeHint().width())
+
+        self.opdsCatalogSelector = QComboBox(self)
+        self.opdsCatalogSelector.setEditable(False)
+        self.opdsCatalogSelectorModel = QStringListModel(self.currentOpdsCatalogs.keys())
+        self.opdsCatalogSelector.setModel(self.opdsCatalogSelectorModel)
+        self.opdsCatalogSelector.setCurrentText(firstCatalogTitle)
+        self.layout.addWidget(self.opdsCatalogSelector, 1, 1, 1, 3)
+
         self.library_view = QTableView(self)
         self.library_view.setAlternatingRowColors(True)
-        self.model = OpdsBooksModel(None, self.dummy_books(), self.db)
         self.library_view.setModel(self.model)
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
@@ -110,10 +130,15 @@ class OpdsDialog(QDialog):
         labelColumnWidth = max(labelColumnWidths)
         self.layout.setColumnMinimumWidth(0, labelColumnWidth)
 
-        #self.resize(self.sizeHint())
+        self.resize(self.sizeHint())
 
     def opdsUrlEditorActivated(self, text):
         prefs['opds_url'] = config.saveOpdsUrlCombobox(self.opdsUrlEditor)
+        catalogsTuple = self.model.downloadOpdsRootCatalog(self.gui, self.opdsUrlEditor.currentText(), True)
+        firstCatalogTitle = catalogsTuple[0]
+        self.currentOpdsCatalogs = catalogsTuple[1] # A dictionary of title->feedURL
+        self.opdsCatalogSelectorModel.setStringList(self.currentOpdsCatalogs.keys())
+        self.opdsCatalogSelector.setCurrentText(firstCatalogTitle)
 
     def setHideNewspapers(self, checked):
         prefs['hideNewspapers'] = checked
@@ -130,17 +155,21 @@ class OpdsDialog(QDialog):
         QMessageBox.about(self, 'About the OPDS Client plugin', text.decode('utf-8'))
 
     def download_opds(self):
-        opdsRootCatalogUrl = next(iter(prefs['opds_url']), '')
-        catalogsTuple = self.model.downloadOpdsRootCatalog(self.gui, opdsRootCatalogUrl, True)
-        firstCatalogTitle = catalogsTuple[0]
-        catalogs = catalogsTuple[1] # A dictionary of title->feedURL
-        if len(catalogs) < 1:
-            return
-        firstCatalogUrl = catalogs[firstCatalogTitle]
-        print 'downloading catalog \'%s\' URL: %s' % (firstCatalogTitle, firstCatalogUrl)
-        self.model.downloadOpdsCatalog(self.gui, firstCatalogUrl)
+        opdsCatalogUrl = self.currentOpdsCatalogs.get(self.opdsCatalogSelector.currentText(), None)
+        if opdsCatalogUrl is None:
+            opdsRootCatalogUrl = next(iter(prefs['opds_url']), '')
+            catalogsTuple = self.model.downloadOpdsRootCatalog(self.gui, opdsRootCatalogUrl, True)
+            firstCatalogTitle = catalogsTuple[0]
+            catalogs = catalogsTuple[1] # A dictionary of title->feedURL
+            if len(catalogs) < 1:
+                return
+            firstCatalogUrl = catalogs[firstCatalogTitle]
+            print 'downloading catalog \'%s\' URL: %s' % (firstCatalogTitle, firstCatalogUrl)
+            self.model.downloadOpdsCatalog(self.gui, firstCatalogUrl)
+        else:
+            self.model.downloadOpdsCatalog(self.gui, opdsCatalogUrl)
         if self.model.isCalibreOpdsServer():
-            self.model.downloadMetadataUsingCalibreRestApi(opdsRootCatalogUrl)
+            self.model.downloadMetadataUsingCalibreRestApi(self.opdsUrlEditor.currentText())
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
