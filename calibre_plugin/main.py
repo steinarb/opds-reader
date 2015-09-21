@@ -7,11 +7,13 @@ __license__   = "GPL v3"
 
 import sys
 import datetime
-from PyQt5.Qt import Qt, QDialog, QGridLayout, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
+from PyQt5.Qt import Qt, QDialog, QGridLayout, QComboBox, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
 from calibre_plugins.opds_client.config import prefs
+from calibre_plugins.opds_client import config
 from calibre.ebooks.metadata.book.base import Metadata
+
 
 class DynamicBook(dict):
     pass
@@ -31,6 +33,21 @@ class OpdsDialog(QDialog):
         self.setWindowTitle('OPDS Client')
         self.setWindowIcon(icon)
 
+        labelColumnWidths = []
+
+        self.opdsUrlLabel = QLabel('OPDS URL: ')
+        self.layout.addWidget(self.opdsUrlLabel, 0, 0)
+        labelColumnWidths.append(self.layout.itemAtPosition(0, 0).sizeHint().width())
+
+        config.convertSingleStringOpdsUrlPreferenceToListOfStringsPreference()
+        self.opdsUrlEditor = QComboBox(self)
+        self.opdsUrlEditor.activated.connect(self.opdsUrlEditorActivated)
+        self.opdsUrlEditor.addItems(prefs['opds_url'])
+        self.opdsUrlEditor.setEditable(True)
+        self.opdsUrlEditor.setInsertPolicy(QComboBox.InsertAtTop)
+        self.layout.addWidget(self.opdsUrlEditor, 0, 1, 1, 3)
+        self.opdsUrlLabel.setBuddy(self.opdsUrlEditor)
+
         self.library_view = QTableView(self)
         self.library_view.setAlternatingRowColors(True)
         self.model = OpdsBooksModel(None, self.dummy_books(), self.db)
@@ -42,17 +59,17 @@ class OpdsDialog(QDialog):
         self.resizeAllLibraryViewLinesToHeaderHeight()
         self.library_view.resizeColumnsToContents()
         buttonColumnNumber = 7
-        self.layout.addWidget(self.library_view, 0, 0, 3, buttonColumnNumber + 1)
+        self.layout.addWidget(self.library_view, 2, 0, 3, buttonColumnNumber + 1)
 
         self.hideNewsCheckbox = QCheckBox('Hide Newspapers', self)
         self.hideNewsCheckbox.clicked.connect(self.setHideNewspapers)
         self.hideNewsCheckbox.setChecked(prefs['hideNewspapers'])
-        self.layout.addWidget(self.hideNewsCheckbox, 3, 0)
+        self.layout.addWidget(self.hideNewsCheckbox, 5, 0, 1, 3)
 
         self.hideBooksAlreadyInLibraryCheckbox = QCheckBox('Hide books already in library', self)
         self.hideBooksAlreadyInLibraryCheckbox.clicked.connect(self.setHideBooksAlreadyInLibrary)
         self.hideBooksAlreadyInLibraryCheckbox.setChecked(prefs['hideBooksAlreadyInLibrary'])
-        self.layout.addWidget(self.hideBooksAlreadyInLibraryCheckbox, 4, 0)
+        self.layout.addWidget(self.hideBooksAlreadyInLibraryCheckbox, 6, 0, 1, 3)
 
         # Let the checkbox initial state control the filtering
         self.model.setFilterBooksThatAreNewspapers(self.hideNewsCheckbox.isChecked())
@@ -61,35 +78,42 @@ class OpdsDialog(QDialog):
         buttonColumnWidths = []
         self.about_button = QPushButton('About', self)
         self.about_button.clicked.connect(self.about)
-        self.layout.addWidget(self.about_button, 3, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(3, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.about_button, 5, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(5, buttonColumnNumber).sizeHint().width()) 
 
         self.download_opds_button = QPushButton('Download OPDS', self)
         self.download_opds_button.clicked.connect(self.download_opds)
-        self.layout.addWidget(self.download_opds_button, 4, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(4, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.download_opds_button, 6, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonColumnNumber).sizeHint().width()) 
 
         self.conf_button = QPushButton('Plugin configuration', self)
         self.conf_button.clicked.connect(self.config)
-        self.layout.addWidget(self.conf_button, 5, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(5, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.conf_button, 7, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(7, buttonColumnNumber).sizeHint().width()) 
 
         self.downloadButton = QPushButton('Download selected books', self)
         self.downloadButton.clicked.connect(self.downloadSelectedBooks)
-        self.layout.addWidget(self.downloadButton, 6, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.downloadButton, 8, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(8, buttonColumnNumber).sizeHint().width()) 
 
         self.fixTimestampButton = QPushButton('Fix timestamps of selection', self)
         self.fixTimestampButton.clicked.connect(self.fixBookTimestamps)
-        self.layout.addWidget(self.fixTimestampButton, 7, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(7, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.fixTimestampButton, 9, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(9, buttonColumnNumber).sizeHint().width()) 
 
         # Make all columns of the grid layout the same width as the button column
         buttonColumnWidth = max(buttonColumnWidths)
         for columnNumber in range(0, buttonColumnNumber):
             self.layout.setColumnMinimumWidth(columnNumber, buttonColumnWidth)
 
-        self.resize(self.sizeHint())
+        # Make sure the first column isn't wider than the labels it holds
+        labelColumnWidth = max(labelColumnWidths)
+        self.layout.setColumnMinimumWidth(0, labelColumnWidth)
+
+        #self.resize(self.sizeHint())
+
+    def opdsUrlEditorActivated(self, text):
+        prefs['opds_url'] = config.saveOpdsUrlCombobox(self.opdsUrlEditor)
 
     def setHideNewspapers(self, checked):
         prefs['hideNewspapers'] = checked

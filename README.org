@@ -28,7 +28,7 @@ Requires git and calibre installed:
 This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
 
 See the LICENSE file for more detail.
-* List of TODO items [24/41]
+* List of TODO items [25/41]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -159,7 +159,7 @@ See the LICENSE file for more detail.
 ** DONE Add licensing and copyright information to all files
 ** DONE Add recently used dropdown to the opds_url configuration
 ** DONE Make the OPDS parsing more robust (hardcoded to the default structure of calibre right now)
-** TODO Put the OPDS feed combobox on the main dialog
+** DONE Put the OPDS feed combobox on the main dialog
 ** TODO Add a catalog selection combobox
  - <2015-09-20 sø 12:13> Non-editable, populated from the catalogs in the root catalog when downloading a new feed
 ** TODO Add search in downloaded results
