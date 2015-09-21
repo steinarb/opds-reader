@@ -69,6 +69,13 @@ class OpdsDialog(QDialog):
         self.opdsCatalogSelector.setCurrentText(firstCatalogTitle)
         self.layout.addWidget(self.opdsCatalogSelector, 1, 1, 1, 3)
 
+        buttonColumnNumber = 7
+        buttonColumnWidths = []
+        self.download_opds_button = QPushButton('Download OPDS', self)
+        self.download_opds_button.clicked.connect(self.download_opds)
+        self.layout.addWidget(self.download_opds_button, 1, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(1, buttonColumnNumber).sizeHint().width()) 
+
         self.library_view = QTableView(self)
         self.library_view.setAlternatingRowColors(True)
         self.library_view.setModel(self.model)
@@ -78,7 +85,6 @@ class OpdsDialog(QDialog):
         self.library_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.resizeAllLibraryViewLinesToHeaderHeight()
         self.library_view.resizeColumnsToContents()
-        buttonColumnNumber = 7
         self.layout.addWidget(self.library_view, 2, 0, 3, buttonColumnNumber + 1)
 
         self.hideNewsCheckbox = QCheckBox('Hide Newspapers', self)
@@ -95,31 +101,25 @@ class OpdsDialog(QDialog):
         self.model.setFilterBooksThatAreNewspapers(self.hideNewsCheckbox.isChecked())
         self.model.setFilterBooksThatAreAlreadyInLibrary(self.hideBooksAlreadyInLibraryCheckbox.isChecked())
 
-        buttonColumnWidths = []
         self.about_button = QPushButton('About', self)
         self.about_button.clicked.connect(self.about)
         self.layout.addWidget(self.about_button, 5, buttonColumnNumber)
         buttonColumnWidths.append(self.layout.itemAtPosition(5, buttonColumnNumber).sizeHint().width()) 
 
-        self.download_opds_button = QPushButton('Download OPDS', self)
-        self.download_opds_button.clicked.connect(self.download_opds)
-        self.layout.addWidget(self.download_opds_button, 6, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonColumnNumber).sizeHint().width()) 
-
         self.conf_button = QPushButton('Plugin configuration', self)
         self.conf_button.clicked.connect(self.config)
-        self.layout.addWidget(self.conf_button, 7, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(7, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.conf_button, 6, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonColumnNumber).sizeHint().width()) 
 
         self.downloadButton = QPushButton('Download selected books', self)
         self.downloadButton.clicked.connect(self.downloadSelectedBooks)
-        self.layout.addWidget(self.downloadButton, 8, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(8, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.downloadButton, 7, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(7, buttonColumnNumber).sizeHint().width()) 
 
         self.fixTimestampButton = QPushButton('Fix timestamps of selection', self)
         self.fixTimestampButton.clicked.connect(self.fixBookTimestamps)
-        self.layout.addWidget(self.fixTimestampButton, 9, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(9, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.fixTimestampButton, 8, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(8, buttonColumnNumber).sizeHint().width()) 
 
         # Make all columns of the grid layout the same width as the button column
         buttonColumnWidth = max(buttonColumnWidths)
