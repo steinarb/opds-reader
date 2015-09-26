@@ -192,6 +192,11 @@ See the LICENSE file for more detail.
 ** DONE Add a catalog selection combobox
  - <2015-09-20 sø 12:13> Non-editable, populated from the catalogs in the root catalog when downloading a new feed
 ** TODO Add search in downloaded results
+ - <2015-09-26 lø 19:55> Solved, but not entirely satsified with the results:
+   - Only the currently visible items are searchable
+   - Only the title is searchable, not title and authors
+   - Only the search matches are shown, instead of scrolling to the matches while showing all
+     - Probably the best that can be done, using just built-in Qt functionality?
 ** TODO Read OPDS feeds other than calibre
  - <2015-09-18 fr 19:01> Some examples
    - feedbooks:
