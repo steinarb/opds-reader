@@ -7,7 +7,7 @@ __license__   = "GPL v3"
 
 import sys
 import datetime
-from PyQt5.Qt import Qt, QDialog, QGridLayout, QLineEdit, QComboBox, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView, QStringListModel
+from PyQt5.Qt import Qt, QDialog, QGridLayout, QLineEdit, QComboBox, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QSortFilterProxyModel, QTableView, QHeaderView, QStringListModel
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
 from calibre_plugins.opds_client.config import prefs
@@ -29,6 +29,8 @@ class OpdsDialog(QDialog):
 
         # The model for the book list
         self.model = OpdsBooksModel(None, self.dummy_books(), self.db)
+        self.searchproxymodel = QSortFilterProxyModel(self)
+        self.searchproxymodel.setSourceModel(self.model)
 
         self.layout = QGridLayout()
         self.setLayout(self.layout)
@@ -92,7 +94,7 @@ class OpdsDialog(QDialog):
         # The main book list
         self.library_view = QTableView(self)
         self.library_view.setAlternatingRowColors(True)
-        self.library_view.setModel(self.model)
+        self.library_view.setModel(self.searchproxymodel)
         self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
@@ -232,5 +234,5 @@ class OpdsDialog(QDialog):
 
     def resizeAllLibraryViewLinesToHeaderHeight(self):
         rowHeight = self.library_view.horizontalHeader().height()
-        for rowNumber in range (0, self.library_view.model().rowCount(None)):
+        for rowNumber in range (0, self.library_view.model().rowCount()):
             self.library_view.setRowHeight(rowNumber, rowHeight)
