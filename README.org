@@ -57,7 +57,7 @@ I made this tool to backup my book collection between two PCs in my home LAN, an
 This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
 
 See the LICENSE file for more detail.
-* List of TODO items [26/41]
+* List of TODO items [27/41]
 ** DONE Create an icon
 - The plugin API seems to mandate one for a plugin that is to add an action to the GUI
 - Need an icon that doesn't have any copyright limitations, it doesn't have to be pretty
@@ -191,7 +191,7 @@ See the LICENSE file for more detail.
 ** DONE Put the OPDS feed combobox on the main dialog
 ** DONE Add a catalog selection combobox
  - <2015-09-20 sø 12:13> Non-editable, populated from the catalogs in the root catalog when downloading a new feed
-** TODO Add search in downloaded results
+** DONE Add search in downloaded results
  - <2015-09-26 lø 19:55> Solved, but not entirely satsified with the results:
    - Only the currently visible items are searchable
    - Only the search matches are shown, instead of scrolling to the matches while showing all
