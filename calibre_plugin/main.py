@@ -7,7 +7,7 @@ __license__   = "GPL v3"
 
 import sys
 import datetime
-from PyQt5.Qt import Qt, QDialog, QGridLayout, QComboBox, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView, QStringListModel
+from PyQt5.Qt import Qt, QDialog, QGridLayout, QLineEdit, QComboBox, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView, QStringListModel
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
 from calibre_plugins.opds_client.config import prefs
@@ -81,6 +81,15 @@ class OpdsDialog(QDialog):
         self.layout.addWidget(self.download_opds_button, 1, buttonColumnNumber)
         buttonColumnWidths.append(self.layout.itemAtPosition(1, buttonColumnNumber).sizeHint().width()) 
 
+        # Search GUI
+        self.searchLabel = QLabel('Search:')
+        self.layout.addWidget(self.searchLabel, 2, buttonColumnNumber - 2, 1, 1, Qt.AlignRight)
+
+        self.searchEditor = QLineEdit(self)
+        self.layout.addWidget(self.searchEditor, 2, buttonColumnNumber - 1, 1, 2)
+        self.searchLabel.setBuddy(self.searchEditor)
+
+        # The main book list
         self.library_view = QTableView(self)
         self.library_view.setAlternatingRowColors(True)
         self.library_view.setModel(self.model)
@@ -90,17 +99,17 @@ class OpdsDialog(QDialog):
         self.library_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.resizeAllLibraryViewLinesToHeaderHeight()
         self.library_view.resizeColumnsToContents()
-        self.layout.addWidget(self.library_view, 2, 0, 3, buttonColumnNumber + 1)
+        self.layout.addWidget(self.library_view, 3, 0, 3, buttonColumnNumber + 1)
 
         self.hideNewsCheckbox = QCheckBox('Hide Newspapers', self)
         self.hideNewsCheckbox.clicked.connect(self.setHideNewspapers)
         self.hideNewsCheckbox.setChecked(prefs['hideNewspapers'])
-        self.layout.addWidget(self.hideNewsCheckbox, 5, 0, 1, 3)
+        self.layout.addWidget(self.hideNewsCheckbox, 6, 0, 1, 3)
 
         self.hideBooksAlreadyInLibraryCheckbox = QCheckBox('Hide books already in library', self)
         self.hideBooksAlreadyInLibraryCheckbox.clicked.connect(self.setHideBooksAlreadyInLibrary)
         self.hideBooksAlreadyInLibraryCheckbox.setChecked(prefs['hideBooksAlreadyInLibrary'])
-        self.layout.addWidget(self.hideBooksAlreadyInLibraryCheckbox, 6, 0, 1, 3)
+        self.layout.addWidget(self.hideBooksAlreadyInLibraryCheckbox, 7, 0, 1, 3)
 
         # Let the checkbox initial state control the filtering
         self.model.setFilterBooksThatAreNewspapers(self.hideNewsCheckbox.isChecked())
@@ -108,13 +117,13 @@ class OpdsDialog(QDialog):
 
         self.downloadButton = QPushButton('Download selected books', self)
         self.downloadButton.clicked.connect(self.downloadSelectedBooks)
-        self.layout.addWidget(self.downloadButton, 5, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(5, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.downloadButton, 6, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonColumnNumber).sizeHint().width()) 
 
         self.fixTimestampButton = QPushButton('Fix timestamps of selection', self)
         self.fixTimestampButton.clicked.connect(self.fixBookTimestamps)
-        self.layout.addWidget(self.fixTimestampButton, 6, buttonColumnNumber)
-        buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonColumnNumber).sizeHint().width()) 
+        self.layout.addWidget(self.fixTimestampButton, 7, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(7, buttonColumnNumber).sizeHint().width()) 
 
         # Make all columns of the grid layout the same width as the button column
         buttonColumnWidth = max(buttonColumnWidths)
