@@ -92,6 +92,7 @@ class OpdsBooksModel(QAbstractTableModel):
         return (firstTitle, catalogEntries)
 
     def downloadOpdsCatalog(self, gui, opdsCatalogUrl):
+        print "downloading catalog: %s" % opdsCatalogUrl
         opdsCatalogFeed = feedparser.parse(opdsCatalogUrl)
         self.books = self.makeMetadataFromParsedOpds(opdsCatalogFeed.entries)
         self.filterBooks()
