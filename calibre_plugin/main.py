@@ -82,12 +82,12 @@ class OpdsDialog(QDialog):
         buttonColumnWidths.append(self.layout.itemAtPosition(1, buttonColumnNumber).sizeHint().width()) 
 
         # Search GUI
-        self.searchLabel = QLabel('Search:')
-        self.layout.addWidget(self.searchLabel, 2, buttonColumnNumber - 2, 1, 1, Qt.AlignRight)
-
         self.searchEditor = QLineEdit(self)
-        self.layout.addWidget(self.searchEditor, 2, buttonColumnNumber - 1, 1, 2)
-        self.searchLabel.setBuddy(self.searchEditor)
+        self.layout.addWidget(self.searchEditor, 2, buttonColumnNumber - 2, 1, 2)
+
+        self.searchButton = QPushButton('Search', self)
+        self.layout.addWidget(self.searchButton, 2, buttonColumnNumber)
+        buttonColumnWidths.append(self.layout.itemAtPosition(2, buttonColumnNumber).sizeHint().width())
 
         # The main book list
         self.library_view = QTableView(self)
