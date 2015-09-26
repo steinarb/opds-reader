@@ -31,6 +31,7 @@ class OpdsDialog(QDialog):
         self.model = OpdsBooksModel(None, self.dummy_books(), self.db)
         self.searchproxymodel = QSortFilterProxyModel(self)
         self.searchproxymodel.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.searchproxymodel.setFilterKeyColumn(-1)
         self.searchproxymodel.setSourceModel(self.model)
 
         self.layout = QGridLayout()
