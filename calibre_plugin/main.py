@@ -30,6 +30,7 @@ class OpdsDialog(QDialog):
         # The model for the book list
         self.model = OpdsBooksModel(None, self.dummy_books(), self.db)
         self.searchproxymodel = QSortFilterProxyModel(self)
+        self.searchproxymodel.setFilterCaseSensitivity(Qt.CaseInsensitive)
         self.searchproxymodel.setSourceModel(self.model)
 
         self.layout = QGridLayout()
@@ -164,7 +165,9 @@ class OpdsDialog(QDialog):
         self.resizeAllLibraryViewLinesToHeaderHeight()
 
     def searchBookList(self):
-        print "starting book list search for: %s" % self.searchEditor.text()
+        searchString = self.searchEditor.text()
+        print "starting book list search for: %s" % searchString
+        self.searchproxymodel.setFilterFixedString(searchString)
 
     def about(self):
         text = get_resources('about.txt')
