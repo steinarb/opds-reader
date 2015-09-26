@@ -56,6 +56,7 @@ class OpdsDialog(QDialog):
         buttonColumnNumber = 7
         buttonColumnWidths = []
         self.about_button = QPushButton('About', self)
+        self.about_button.setAutoDefault(False)
         self.about_button.clicked.connect(self.about)
         self.layout.addWidget(self.about_button, 0, buttonColumnNumber)
         buttonColumnWidths.append(self.layout.itemAtPosition(0, buttonColumnNumber).sizeHint().width()) 
@@ -79,15 +80,19 @@ class OpdsDialog(QDialog):
         self.layout.addWidget(self.opdsCatalogSelector, 1, 1, 1, 3)
 
         self.download_opds_button = QPushButton('Download OPDS', self)
+        self.download_opds_button.setAutoDefault(False)
         self.download_opds_button.clicked.connect(self.download_opds)
         self.layout.addWidget(self.download_opds_button, 1, buttonColumnNumber)
         buttonColumnWidths.append(self.layout.itemAtPosition(1, buttonColumnNumber).sizeHint().width()) 
 
         # Search GUI
         self.searchEditor = QLineEdit(self)
+        self.searchEditor.returnPressed.connect(self.searchBookList)
         self.layout.addWidget(self.searchEditor, 2, buttonColumnNumber - 2, 1, 2)
 
         self.searchButton = QPushButton('Search', self)
+        self.searchButton.setAutoDefault(False)
+        self.searchButton.clicked.connect(self.searchBookList)
         self.layout.addWidget(self.searchButton, 2, buttonColumnNumber)
         buttonColumnWidths.append(self.layout.itemAtPosition(2, buttonColumnNumber).sizeHint().width())
 
@@ -118,11 +123,13 @@ class OpdsDialog(QDialog):
         self.model.setFilterBooksThatAreAlreadyInLibrary(self.hideBooksAlreadyInLibraryCheckbox.isChecked())
 
         self.downloadButton = QPushButton('Download selected books', self)
+        self.downloadButton.setAutoDefault(False)
         self.downloadButton.clicked.connect(self.downloadSelectedBooks)
         self.layout.addWidget(self.downloadButton, 6, buttonColumnNumber)
         buttonColumnWidths.append(self.layout.itemAtPosition(6, buttonColumnNumber).sizeHint().width()) 
 
         self.fixTimestampButton = QPushButton('Fix timestamps of selection', self)
+        self.fixTimestampButton.setAutoDefault(False)
         self.fixTimestampButton.clicked.connect(self.fixBookTimestamps)
         self.layout.addWidget(self.fixTimestampButton, 7, buttonColumnNumber)
         buttonColumnWidths.append(self.layout.itemAtPosition(7, buttonColumnNumber).sizeHint().width()) 
@@ -155,6 +162,9 @@ class OpdsDialog(QDialog):
         prefs['hideBooksAlreadyInLibrary'] = checked
         self.model.setFilterBooksThatAreAlreadyInLibrary(checked)
         self.resizeAllLibraryViewLinesToHeaderHeight()
+
+    def searchBookList(self):
+        print "starting book list search for: %s" % self.searchEditor.text()
 
     def about(self):
         text = get_resources('about.txt')
