@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Opds-reader by steinarb</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Opds-reader</h1>
+        <p>A calibre plugin containing an OPDS client that can import books into calibre</p>
+
+        <p class="view"><a href="https://github.com/steinarb/opds-reader">View the Project on GitHub <small>steinarb/opds-reader</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/steinarb/opds-reader/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/steinarb/opds-reader/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/steinarb/opds-reader">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <div id="table-of-contents">
+<h2>
+<a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. What's this?</a></li>
+<li><a href="#sec-2">2. How do I install it?</a></li>
+<li><a href="#sec-3">3. How do I use it?</a></li>
+<li><a href="#sec-4">4. License</a></li>
+</ul>
+</div>
+
+<p></p>
+</div>
+
+<h1>
+<a id="whats-this" class="anchor" href="#whats-this" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's this?<a id="sec-1" name="sec-1"></a>
+</h1>
+
+<p>This is a calibre plugin that is an OPDS client intended to read the contents of another calibre installation, find the differences to the current calibre and offer to copy books from the other calibre into the current calibre</p>
+
+<h1>
+<a id="how-do-i-install-it" class="anchor" href="#how-do-i-install-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>How do I install it?<a id="sec-2" name="sec-2"></a>
+</h1>
+
+<p>Requires git and calibre installed:</p>
+
+<ul>
+<li>
+<p>Clone the repository:</p>
+
+<pre><code>git clone https://github.com/steinarb/opds-reader.git
+</code></pre>
+</li>
+<li>
+<p>Install the plugin in calibre</p>
+
+<pre><code>cd opds-reader/calibre_plugin/
+calibre-customize -b .
+</code></pre>
+</li>
+<li>  Start calibre (if calibre was already running, stop calibre and start it again)</li>
+<li>  Click the button "Preferences"</li>
+<li>  In the dialog "calibre - Preferences":
+
+<ul>
+<li>  Under "Interface", click on the button "Toolbar"</li>
+<li>  In the dialog "calibre - Preferences - Toolbar":
+
+<ul>
+<li>  In the dropdown, select "The main toolbar"</li>
+<li>  In "Available actions" scroll down to find "OPDS Client" and select it</li>
+<li>  Click the top arrow button (arrow pointing right)</li>
+<li>  Click the "Apply" button</li>
+</ul>
+</li>
+<li>  Click the "Close" button</li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="how-do-i-use-it" class="anchor" href="#how-do-i-use-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>How do I use it?<a id="sec-3" name="sec-3"></a>
+</h1>
+
+<p>I made this tool to backup my book collection between two PCs in my home LAN, and that is the procedure I will document here:
+1.  In the calibre you wish to copy from (in this example called calibre1.home.lan):
+    1.  Click Preferences
+    2.  In the "calibre - Preferences" dialog:
+        1.  Click "Sharing over the net"
+        2.  In the "calibre - Preferences - Sharing over the net" dialog:
+            1.  Click the "Start Server" button
+            2.  Select the checkbox "Run server automatically when calibre starts"
+            3.  Click the "Apply" button
+        3.  Click the "close" button
+2.  In the calibre you wish to copy to
+    1.  Install this plugin (see the "How do I install it?" section)
+    2.  Click the "OPDS client" button
+    3.  In the "OPDS client" dialog
+        1.  Edit the "OPDS URL" value, change</p>
+
+<pre><code>            http://localhost:8080/opds
+
+        to
+
+            http://calibre1.home.lan:8080/opds
+
+        and then press the RETURN key on the keyboard
+    2.  Click the "Download OPDS" button
+    3.  Wait until the OPDS feed has finished loading (this may take some time if there is a large number of books to load)
+        -   Note: if no books appear, try unchecking the "Hide books already in the library" checkbox.  If that makes a lot of books appear, it means that the two calibre instances have the same books
+    4.  select the books you wish to copy into the current calibre and click the "Download selected books"
+        -   calibre will start downloading and installing the books:
+            -   The Jobs counter in calibre's lower right corner, will show a decrementing number and the icon will spin
+            -   The book list will be updated as the books are downloaded
+    5.  The downloaded books will be in approximately the same order as in the original, but the time stamp will be the download time. To fix the time stamp, click on the "Fix timestamps of the selection" button
+        -   The updated timestamps may not show up immediatly, but they will show up after the first update of the display, and the books will be ordered according to the timestamp after stopping and starting calibre
+</code></pre>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License<a id="sec-4" name="sec-4"></a>
+</h1>
+
+<p>This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.</p>
+
+<p>See the LICENSE file for more detail.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/steinarb">steinarb</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
