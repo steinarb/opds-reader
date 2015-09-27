@@ -28,7 +28,10 @@
         </ul>
       </header>
       <section>
-        <div id="table-of-contents">
+        <h1>
+<a id="calibre-opds-client" class="anchor" href="#calibre-opds-client" aria-hidden="true"><span class="octicon octicon-link"></span></a>Calibre OPDS client</h1>
+
+<div id="table-of-contents">
 <h2>
 <a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -43,97 +46,180 @@
 <p></p>
 </div>
 
-<h1>
-<a id="whats-this" class="anchor" href="#whats-this" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's this?<a id="sec-1" name="sec-1"></a>
-</h1>
+<div id="outline-container-sec-1">
+<h2 id="sec-1">
+<a id="1-whats-this" class="anchor" href="#1-whats-this" aria-hidden="true"><span class="octicon octicon-link"></span></a>1 What's this?</h2>
+<div id="text-1">
+<p>
+This is a calibre plugin that is an OPDS client intended to read the contents of another calibre installation, find the differences to the current calibre and offer to copy books from the other calibre into the current calibre
+</p>
+</div>
 
-<p>This is a calibre plugin that is an OPDS client intended to read the contents of another calibre installation, find the differences to the current calibre and offer to copy books from the other calibre into the current calibre</p>
+<p></p>
+</div>
 
-<h1>
-<a id="how-do-i-install-it" class="anchor" href="#how-do-i-install-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>How do I install it?<a id="sec-2" name="sec-2"></a>
-</h1>
-
-<p>Requires git and calibre installed:</p>
-
+<div id="outline-container-sec-2">
+<h2 id="sec-2">
+<a id="2-how-do-i-install-it" class="anchor" href="#2-how-do-i-install-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>2 How do I install it?</h2>
+<div id="text-2">
+<p>
+Requires git and calibre installed:
+</p>
 <ul>
-<li>
-<p>Clone the repository:</p>
-
-<pre><code>git clone https://github.com/steinarb/opds-reader.git
-</code></pre>
+<li>Clone the repository:
+<pre>
+git clone https://github.com/steinarb/opds-reader.git
+</pre>
 </li>
-<li>
-<p>Install the plugin in calibre</p>
-
-<pre><code>cd opds-reader/calibre_plugin/
+<li>Install the plugin in calibre
+<pre>
+cd opds-reader/calibre_plugin/
 calibre-customize -b .
-</code></pre>
+</pre>
 </li>
-<li>  Start calibre (if calibre was already running, stop calibre and start it again)</li>
-<li>  Click the button "Preferences"</li>
-<li>  In the dialog "calibre - Preferences":
-
+<li>Start calibre (if calibre was already running, stop calibre and start it again)
+</li>
+<li>Click the button "Preferences"
+</li>
+<li>In the dialog "calibre - Preferences":
 <ul>
-<li>  Under "Interface", click on the button "Toolbar"</li>
-<li>  In the dialog "calibre - Preferences - Toolbar":
-
+<li>Under "Interface", click on the button "Toolbar"
+</li>
+<li>In the dialog "calibre - Preferences - Toolbar":
 <ul>
-<li>  In the dropdown, select "The main toolbar"</li>
-<li>  In "Available actions" scroll down to find "OPDS Client" and select it</li>
-<li>  Click the top arrow button (arrow pointing right)</li>
-<li>  Click the "Apply" button</li>
+<li>In the dropdown, select "The main toolbar"
+</li>
+<li>In "Available actions" scroll down to find "OPDS Client" and select it
+</li>
+<li>Click the top arrow button (arrow pointing right)
+</li>
+<li>Click the "Apply" button
+</li>
 </ul>
 </li>
-<li>  Click the "Close" button</li>
+<li>Click the "Close" button
+</li>
 </ul>
 </li>
 </ul>
+</div>
 
-<h1>
-<a id="how-do-i-use-it" class="anchor" href="#how-do-i-use-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>How do I use it?<a id="sec-3" name="sec-3"></a>
-</h1>
+<p></p>
+</div>
 
-<p>I made this tool to backup my book collection between two PCs in my home LAN, and that is the procedure I will document here:
-1.  In the calibre you wish to copy from (in this example called calibre1.home.lan):
-    1.  Click Preferences
-    2.  In the "calibre - Preferences" dialog:
-        1.  Click "Sharing over the net"
-        2.  In the "calibre - Preferences - Sharing over the net" dialog:
-            1.  Click the "Start Server" button
-            2.  Select the checkbox "Run server automatically when calibre starts"
-            3.  Click the "Apply" button
-        3.  Click the "close" button
-2.  In the calibre you wish to copy to
-    1.  Install this plugin (see the "How do I install it?" section)
-    2.  Click the "OPDS client" button
-    3.  In the "OPDS client" dialog
-        1.  Edit the "OPDS URL" value, change</p>
+<div id="outline-container-sec-3">
+<h2 id="sec-3">
+<a id="3-how-do-i-use-it" class="anchor" href="#3-how-do-i-use-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>3 How do I use it?</h2>
+<div id="text-3">
+<p>
+I made this tool to backup my book collection between two PCs in my home LAN, and that is the procedure I will document here:
+</p>
+<ol>
+<li>In the calibre you wish to copy from (in this example called calibre1.home.lan):
+<ol>
+<li>Click Preferences
+</li>
+<li>In the "calibre - Preferences" dialog:
+<ol>
+<li>Click "Sharing over the net"
+</li>
+<li>In the "calibre - Preferences - Sharing over the net" dialog:
+<ol>
+<li>Click the "Start Server" button
+</li>
+<li>Select the checkbox "Run server automatically when calibre starts"
+</li>
+<li>Click the "Apply" button
+</li>
+</ol>
+</li>
+<li>Click the "close" button
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>In the calibre you wish to copy to
+<ol>
+<li>Install this plugin (see the "How do I install it?" section)
+</li>
+<li>Click the "OPDS client" button
+</li>
+<li>In the "OPDS client" dialog
+<ol>
+<li>Edit the "OPDS URL" value, change
+<pre>
+http://localhost:8080/opds
+</pre>
+<p>
+to
+</p>
+<pre>
+http://calibre1.home.lan:8080/opds
+</pre>
+<p>
+and then press the RETURN key on the keyboard
+</p>
+</li>
+<li>Click the "Download OPDS" button
+</li>
+<li>Wait until the OPDS feed has finished loading (this may take some time if there is a large number of books to load)
+<ul>
+<li>Note: if no books appear, try unchecking the "Hide books already in the library" checkbox.  If that makes a lot of books appear, it means that the two calibre instances have the same books
+</li>
+</ul>
+</li>
+<li>select the books you wish to copy into the current calibre and click the "Download selected books"
+<ul>
+<li>calibre will start downloading and installing the books:
+<ul>
+<li>The Jobs counter in calibre's lower right corner, will show a decrementing number and the icon will spin
+</li>
+<li>The book list will be updated as the books are downloaded
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The downloaded books will be in approximately the same order as in the original, but the time stamp will be the download time. To fix the time stamp, click on the "Fix timestamps of the selection" button
+<ul>
+<li>The updated timestamps may not show up immediatly, but they will show up after the first update of the display, and the books will be ordered according to the timestamp after stopping and starting calibre
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</div>
 
-<pre><code>            http://localhost:8080/opds
+<p></p>
+</div>
 
-        to
+<div id="outline-container-sec-4">
+<h2 id="sec-4">
+<a id="4-license" class="anchor" href="#4-license" aria-hidden="true"><span class="octicon octicon-link"></span></a>4 License</h2>
+<div id="text-4">
+<p>
+This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
+</p>
 
-            http://calibre1.home.lan:8080/opds
+<p>
+See the LICENSE file for more detail.</p>
+</div>
 
-        and then press the RETURN key on the keyboard
-    2.  Click the "Download OPDS" button
-    3.  Wait until the OPDS feed has finished loading (this may take some time if there is a large number of books to load)
-        -   Note: if no books appear, try unchecking the "Hide books already in the library" checkbox.  If that makes a lot of books appear, it means that the two calibre instances have the same books
-    4.  select the books you wish to copy into the current calibre and click the "Download selected books"
-        -   calibre will start downloading and installing the books:
-            -   The Jobs counter in calibre's lower right corner, will show a decrementing number and the icon will spin
-            -   The book list will be updated as the books are downloaded
-    5.  The downloaded books will be in approximately the same order as in the original, but the time stamp will be the download time. To fix the time stamp, click on the "Fix timestamps of the selection" button
-        -   The updated timestamps may not show up immediatly, but they will show up after the first update of the display, and the books will be ordered according to the timestamp after stopping and starting calibre
-</code></pre>
+<p></p>
+</div>
 
-<h1>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License<a id="sec-4" name="sec-4"></a>
-</h1>
+<div id="postamble">
 
-<p>This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.</p>
+<p>Created: 2015-09-27 sø 23:20</p>
 
-<p>See the LICENSE file for more detail.</p>
+<p><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+
+<p><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/steinarb">steinarb</a></p>
