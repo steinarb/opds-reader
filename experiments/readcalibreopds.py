@@ -1,6 +1,6 @@
 import feedparser
 
-calibre_url = "http://edwards.hjemme.lan:8080/opds"
+calibre_url = "http://localhost:8080/opds"
 
 feed = feedparser.parse(calibre_url)
 
