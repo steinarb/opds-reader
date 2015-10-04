@@ -214,6 +214,134 @@ See the LICENSE file for more detail.
      : http://opds.oreilly.com/opds/
    - Baen ebooks:
      : http://www.baenebooks.com/stanza.aspx
+ - <2015-10-04 søn 10:57> Need to differentiate between "navigation feeds" and "aquisition feeds"
+   - For the calibre OPDS feeds
+     - The top level calibre feed is a navigation feed
+     - The "Newest" feed on the second level, is an "aquisition feed"
+     - The "Authors" feed on the second level, is a "navigation feed" with the entries consisting of links to each author with a surname starting with a particular letter
+   - A "navigation feed", is identified by:
+     : kind=navigation
+     in the parameter to the type definition in the "type" attribute of a link element, e.g. like so:
+     #+BEGIN_SRC xml
+       <link rel="start"   
+             href="/opds-catalogs/root.xml"
+             type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+     #+END_SRC
+   - An "aquisition feed", is identified by:
+     : kind=aquisition
+     in the parameter to the type definition in the "type" attribute of a link element, e.g. like so:
+     #+BEGIN_SRC xml
+       <link rel="self"    
+              href="/opds-catalogs/unpopular.xml"
+              type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+     #+END_SRC
+   - Unfortunately, the OPDS feeds don't have a "kind" parameter to the OPDS feeds:
+     - Newest (which links to an aquisition feed, where all entries are books):
+       #+BEGIN_SRC xml
+         <link type="application/atom+xml;type=feed;profile=opds-catalog"
+               href="/opds/navcatalog/4f6e6577657374"/>
+       #+END_SRC
+     - Authors (which links to a navigation feeds, where all entries are new OPDS feds):
+       #+BEGIN_SRC xml
+         <link type="application/atom+xml;type=feed;profile=opds-catalog" 
+               href="/opds/navcatalog/4e617574686f7273"/>
+       #+END_SRC
+     - In other words: nothing to distinguish the two in just the link to the feed
+       - I.e. it will be necessary to handle all feeds the same way, and just recurse on the links that are feeds
+ - <2015-10-04 søn 11:54> Trying to distinguish the entries in "authors" from the entries in "Newest"
+   - "Authors" entry:
+     #+BEGIN_SRC python
+       {
+           u'updated': u'2015-09-28T15:49:33+00:00',
+           u'updated_parsed': time.struct_time(tm_year=2015, tm_mon=9, tm_mday=28, tm_hour=15, tm_min=49, tm_sec=33, tm_wday=0, tm_yday=271, tm_isdst=0),
+           u'links': [
+               {
+                   'href': u'http://localhost:8080/opds/categorygroup/617574686f7273/5c',
+                   'type': u'application/atom+xml;type=feed;profile=opds-catalog',
+                   u'rel': u'alternate'
+               }
+           ],
+           u'title': u'\\',
+           u'summary': u'1 items',
+           u'content': [
+               {
+                   u'base': u'http://localhost:8080/opds/navcatalog/4e617574686f7273',
+                   u'type': u'text/plain',
+                   u'value': u'1 items',
+                   u'language': None}
+           ],
+           u'guidislink': True,
+           u'title_detail': {
+               u'base': u'http://localhost:8080/opds/navcatalog/4e617574686f7273',
+               u'type': u'text/plain',
+               u'value': u'\\',
+               u'language': None},
+           u'link': u'calibre:category-group:authors:\\',
+           u'id': u'calibre:category-group:authors:\\'
+       }
+     #+END_SRC
+   - "Newest" entry:
+     #+BEGIN_SRC python
+       {
+           u'updated': u'2015-09-28T15:49:33+00:00',
+           u'updated_parsed': time.struct_time(tm_year=2015, tm_mon=9, tm_mday=28, tm_hour=15, tm_min=49, tm_sec=33, tm_wday=0, tm_yday=271, tm_isdst=0),
+           u'links': [
+               {
+                   'href': u'http://localhost:8080/get/epub/460',
+                   'type': u'application/epub+zip',
+                   'rel': u'http://opds-spec.org/acquisition'
+               },
+               {
+                   'href': u'http://localhost:8080/get/cover/460',
+                   'type': u'image/jpeg',
+                   'rel': u'http://opds-spec.org/cover'
+               },
+               {
+                   'href': u'http://localhost:8080/get/thumb/460',
+                   'type': u'image/jpeg',
+                   'rel': u'http://opds-spec.org/thumbnail'
+               }
+           ],
+           u'author': u'Michael Scott Rohan & Allan J. Scott',
+           u'title': u'The Ice King',
+           u'summary': u'TAGS: Fiction,
+           General,
+           Science Fiction<br />\n<p class="description">A Viking temple. A Viking ship. Both preserved in the clinging,
+           black mud of the North Yorkshire estuary. Press and TV watch over the archaeologists\' shoulders as past and present merge.  And while huge,
+           death-cold creatures stalk and destroy through the blizzards of an eerily early winter,
+           modern computer science and the dark night-knowledge of the old Norse gods disinter a terrible truth about a past that is sleeping,
+           not dead.</p>',
+           u'content': [
+               {
+                   u'base': u'http://localhost:8080/opds/navcatalog/4f6e6577657374',
+                   u'type': u'application/xhtml+xml',
+                   u'value': u'TAGS: Fiction,
+                   General,
+                   Science Fiction<br />\n<p class="description">A Viking temple. A Viking ship. Both preserved in the clinging,
+                   black mud of the North Yorkshire estuary. Press and TV watch over the archaeologists\' shoulders as past and present merge.  And while huge,
+                   death-cold creatures stalk and destroy through the blizzards of an eerily early winter,
+                   modern computer science and the dark night-knowledge of the old Norse gods disinter a terrible truth about a past that is sleeping,
+                   not dead.</p>',
+                   u'language': None}
+           ],
+           u'guidislink': True,
+           u'title_detail': {
+               u'base': u'http://localhost:8080/opds/navcatalog/4f6e6577657374',
+               u'type': u'text/plain',
+               u'value': u'The Ice King',
+               u'language': None},
+           u'link': u'urn:uuid:c34a0ada-ffe2-4d51-a820-9a84b7664003',
+           u'authors': [
+               {
+                   u'name': u'Michael Scott Rohan & Allan J. Scott'
+               }
+           ],
+           u'author_detail': {
+               u'name': u'Michael Scott Rohan & Allan J. Scott'
+           },
+           u'id': u'urn:uuid:c34a0ada-ffe2-4d51-a820-9a84b7664003'
+       }
+     #+END_SRC
 ** TODO Add auto discovery of calibre instances in the LAN
  - <2015-09-06 søn 11:49> Perhaps use the Bonjour protocol? (is this what FBReaderJ uses?)
 ** TODO Find out why the OPDS reader dialog sometimes disappear after downloading the OPDS
