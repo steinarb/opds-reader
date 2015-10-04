@@ -15,7 +15,8 @@ print feed.keys()
 newest_url = feed.entries[0].links[0].href
 authors_url = feed.entries[2].links[0].href
 
-authors_feed = feedparser.parse(authors_url)
+#authors_feed = feedparser.parse(authors_url)
+newest_feed = feedparser.parse(newest_url)
 
 #print newest_feed.keys()
 #newest_feed_feed_links = newest_feed.feed.links
@@ -26,4 +27,5 @@ authors_feed = feedparser.parse(authors_url)
 #print newest_feed.entries[8]
 #print newest_feed.entries[0].links
 
-print authors_feed
+print newest_feed
+#print authors_feed
