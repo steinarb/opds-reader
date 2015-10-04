@@ -11,7 +11,7 @@ __copyright__ = "Steinar Bang, 2015"
 __credits__   = ["Steinar Bang"]
 __license__   = "GPL v3"
 
-print feed.keys()
+print feed
 newest_url = feed.entries[0].links[0].href
 authors_url = feed.entries[2].links[0].href
 
@@ -27,5 +27,5 @@ newest_feed = feedparser.parse(newest_url)
 #print newest_feed.entries[8]
 #print newest_feed.entries[0].links
 
-print newest_feed
+#print newest_feed
 #print authors_feed
