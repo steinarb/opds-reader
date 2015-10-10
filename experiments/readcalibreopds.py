@@ -1,6 +1,6 @@
 import feedparser
 
-calibre_url = "http://localhost:8080/opds"
+calibre_url = "http://www.feedbooks.com/catalog.atom"
 
 feed = feedparser.parse(calibre_url)
 
