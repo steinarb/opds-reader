@@ -137,12 +137,21 @@ class OpdsBooksModel(QAbstractTableModel):
             return self.db.has_book(book)
         return False
 
-    def makeMetadataFromParsedOpds(self, books):
+    def makeMetadataFromParsedOpds(self, entries):
         metadatalist = []
-        for book in books:
-            metadata = self.opdsToMetadata(book)
-            metadatalist.append(metadata)
+        for entry in entries:
+            if self.hasAquisitionLink(entry):
+                metadata = self.opdsToMetadata(entry)
+                metadatalist.append(metadata)
         return metadatalist
+
+    def hasAquisitionLink(self, entry):
+        links = entry.get('links', [])
+        for link in links:
+            rel = link.get('rel', u'')
+            if rel == u'http://opds-spec.org/acquisition':
+                return True
+        return False
 
     def opdsToMetadata(self, opdsBookStructure):
         authors = opdsBookStructure.author.replace(u'& ', u'&')
