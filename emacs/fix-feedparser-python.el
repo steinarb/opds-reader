@@ -21,4 +21,6 @@
     (goto-char (point-min))
     (replace-string "]}" "]\n}")
     (goto-char (point-min))
+    (replace-string "}}" "}\n}")
+    (goto-char (point-min))
     (indent-region (point-min) (point-max))))
