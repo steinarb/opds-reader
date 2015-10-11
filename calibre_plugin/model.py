@@ -94,13 +94,15 @@ class OpdsBooksModel(QAbstractTableModel):
     def downloadOpdsCatalog(self, gui, opdsCatalogUrl):
         print "downloading catalog: %s" % opdsCatalogUrl
         opdsCatalogFeed = feedparser.parse(opdsCatalogUrl)
-        self.books = self.makeMetadataFromParsedOpds(opdsCatalogFeed.entries)
+        entries = opdsCatalogFeed.get('entries', [])
+        self.books = self.makeMetadataFromParsedOpds(entries)
         self.filterBooks()
         QCoreApplication.processEvents()
         nextUrl = self.findNextUrl(opdsCatalogFeed.feed)
         while nextUrl is not None:
             nextFeed = feedparser.parse(nextUrl)
-            self.books = self.books + self.makeMetadataFromParsedOpds(nextFeed.entries)
+            entries = nextFeed.get('entries', [])
+            self.books = self.books + self.makeMetadataFromParsedOpds(entries)
             self.filterBooks()
             QCoreApplication.processEvents()
             nextUrl = self.findNextUrl(nextFeed.feed)
