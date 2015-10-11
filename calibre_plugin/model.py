@@ -187,7 +187,8 @@ class OpdsBooksModel(QAbstractTableModel):
         return metadata
 
     def findNextUrl(self, feed):
-        for link in feed.links:
+        links = feed.get('links', [])
+        for link in links:
             if link.rel == u'next':
                 return link.href
         return None
