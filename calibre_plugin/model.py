@@ -92,12 +92,17 @@ class OpdsBooksModel(QAbstractTableModel):
         return (firstTitle, catalogEntries)
 
     def downloadOpdsCatalog(self, gui, opdsCatalogUrl):
+        self.books = []
+        self.doDownloadOpdsCatalog(gui, opdsCatalogUrl)
+
+    def doDownloadOpdsCatalog(self, gui, opdsCatalogUrl):
         print "downloading catalog: %s" % opdsCatalogUrl
         opdsCatalogFeed = feedparser.parse(opdsCatalogUrl)
         entries = opdsCatalogFeed.get('entries', [])
-        self.books = self.makeMetadataFromParsedOpds(entries)
+        self.books = self.books + self.makeMetadataFromParsedOpds(entries)
         self.filterBooks()
         QCoreApplication.processEvents()
+        self.recursivelyDownloadFeeds(gui, entries)
         nextUrl = self.findNextUrl(opdsCatalogFeed.feed)
         while nextUrl is not None:
             nextFeed = feedparser.parse(nextUrl)
@@ -105,7 +110,17 @@ class OpdsBooksModel(QAbstractTableModel):
             self.books = self.books + self.makeMetadataFromParsedOpds(entries)
             self.filterBooks()
             QCoreApplication.processEvents()
+            self.recursivelyDownloadFeeds(gui, entries)
             nextUrl = self.findNextUrl(nextFeed.feed)
+
+    def recursivelyDownloadFeeds(self, gui, entries):
+        for entry in entries:
+            links = entry.get('links', [])
+            for link in links:
+                type = link.get('type', u'')
+                if type.startswith(u'application/atom+xml;type=feed;profile=opds-catalog'):
+                    href = link.get('href', u'')
+                    self.doDownloadOpdsCatalog(gui, href)
 
     def isCalibreOpdsServer(self):
         return self.serverHeader.startswith('calibre')
