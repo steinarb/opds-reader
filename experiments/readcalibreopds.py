@@ -1,6 +1,6 @@
 import feedparser
 
-calibre_url = "http://www.feedbooks.com/catalog.atom"
+calibre_url = "http://m.gutenberg.org/ebooks/?format=opds"
 
 feed = feedparser.parse(calibre_url)
 
