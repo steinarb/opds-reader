@@ -9,7 +9,13 @@ import datetime
 from PyQt5.Qt import Qt, QAbstractTableModel, QCoreApplication
 from calibre.ebooks.metadata.book.base import Metadata
 from calibre.gui2 import error_dialog
-from calibre.web.feeds import feedparser
+from calibre.constants import islinux
+
+if islinux:
+    from calibre.web.feeds import parse
+else:
+    from calibre.web.feeds.feedparser import parse
+
 import urlparse
 import urllib2
 import json
@@ -66,7 +72,7 @@ class OpdsBooksModel(QAbstractTableModel):
         return None
 
     def downloadOpdsRootCatalog(self, gui, opdsUrl, displayDialogOnErrors):
-        feed = feedparser.parse(opdsUrl)
+        feed = parse(opdsUrl)
         if 'bozo_exception' in feed:
             exception = feed['bozo_exception']
             message = 'Failed opening the OPDS URL ' + opdsUrl + ': '
@@ -93,13 +99,13 @@ class OpdsBooksModel(QAbstractTableModel):
 
     def downloadOpdsCatalog(self, gui, opdsCatalogUrl):
         print "downloading catalog: %s" % opdsCatalogUrl
-        opdsCatalogFeed = feedparser.parse(opdsCatalogUrl)
+        opdsCatalogFeed = parse(opdsCatalogUrl)
         self.books = self.makeMetadataFromParsedOpds(opdsCatalogFeed.entries)
         self.filterBooks()
         QCoreApplication.processEvents()
         nextUrl = self.findNextUrl(opdsCatalogFeed.feed)
         while nextUrl is not None:
-            nextFeed = feedparser.parse(nextUrl)
+            nextFeed = parse(nextUrl)
             self.books = self.books + self.makeMetadataFromParsedOpds(nextFeed.entries)
             self.filterBooks()
             QCoreApplication.processEvents()
