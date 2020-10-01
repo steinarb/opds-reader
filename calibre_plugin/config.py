@@ -27,8 +27,8 @@ class ConfigWidget(QWidget):
         self.layout.addWidget(self.opdsUrlLabel, 0, 0)
         labelColumnWidths.append(self.layout.itemAtPosition(0, 0).sizeHint().width())
 
-        print type(prefs.defaults['opds_url'])
-        print type(prefs['opds_url'])
+        print(type(prefs.defaults['opds_url']))
+        print(type(prefs['opds_url']))
         convertSingleStringOpdsUrlPreferenceToListOfStringsPreference()
         self.opdsUrlEditor = QComboBox(self)
         self.opdsUrlEditor.addItems(prefs['opds_url'])
@@ -57,9 +57,9 @@ class ConfigWidget(QWidget):
 
 def saveOpdsUrlCombobox(opdsUrlEditor):
     opdsUrls = []
-    print "item count: %d" % opdsUrlEditor.count()
+    print("item count: %d" % opdsUrlEditor.count())
     for i in range(opdsUrlEditor.count()):
-        print "item %d: %s" % (i, opdsUrlEditor.itemText(i))
+        print("item %d: %s" % (i, opdsUrlEditor.itemText(i)))
         opdsUrls.append(opdsUrlEditor.itemText(i))
     # Move the selected item first in the list
     currentSelectedUrlIndex = opdsUrlEditor.currentIndex()

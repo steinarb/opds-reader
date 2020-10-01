@@ -1,7 +1,7 @@
 """model.py: This is a QAbstractTableModel that holds a list of Metadata objects created from books in an OPDS feed"""
 
 __author__    = "Steinar Bang"
-__copyright__ = "Steinar Bang, 2015"
+__copyright__ = "Steinar Bang, 2015-2020"
 __credits__   = ["Steinar Bang"]
 __license__   = "GPL v3"
 
@@ -10,8 +10,8 @@ from PyQt5.Qt import Qt, QAbstractTableModel, QCoreApplication
 from calibre.ebooks.metadata.book.base import Metadata
 from calibre.gui2 import error_dialog
 from calibre.web.feeds import feedparser
-import urlparse
-import urllib2
+import urllib.parse
+import urllib.request
 import json
 import re
 
@@ -76,8 +76,8 @@ class OpdsBooksModel(QAbstractTableModel):
             error_dialog(gui, _('Failed opening the OPDS URL'), message, reason, displayDialogOnErrors)
             return (None, {})
         self.serverHeader = feed.headers['server']
-        print "serverHeader: %s" % self.serverHeader
-        print "feed.entries: %s" % feed.entries
+        print("serverHeader: %s" % self.serverHeader)
+        print("feed.entries: %s" % feed.entries)
         catalogEntries = {}
         firstTitle = None
         for entry in feed.entries:
@@ -87,12 +87,12 @@ class OpdsBooksModel(QAbstractTableModel):
             links = entry.get('links', [])
             firstLink = next(iter(links), None)
             if firstLink is not None:
-                print "firstLink: %s" % firstLink
+                print("firstLink: %s" % firstLink)
                 catalogEntries[title] = firstLink.href
         return (firstTitle, catalogEntries)
 
     def downloadOpdsCatalog(self, gui, opdsCatalogUrl):
-        print "downloading catalog: %s" % opdsCatalogUrl
+        print("downloading catalog: %s" % opdsCatalogUrl)
         opdsCatalogFeed = feedparser.parse(opdsCatalogUrl)
         self.books = self.makeMetadataFromParsedOpds(opdsCatalogFeed.entries)
         self.filterBooks()
