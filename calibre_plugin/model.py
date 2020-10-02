@@ -75,7 +75,7 @@ class OpdsBooksModel(QAbstractTableModel):
                 reason = str(exception.reason)
             error_dialog(gui, _('Failed opening the OPDS URL'), message, reason, displayDialogOnErrors)
             return (None, {})
-        self.serverHeader = feed.headers['server']
+        self.serverHeader = feed.headers['Server']
         print("serverHeader: %s" % self.serverHeader)
         print("feed.entries: %s" % feed.entries)
         catalogEntries = {}
@@ -194,26 +194,26 @@ class OpdsBooksModel(QAbstractTableModel):
         # a meaningful timestamp for the books
 
         # Get the base of the web server, from the OPDS URL
-        parsedOpdsUrl = urlparse.urlparse(opdsUrl)
+        parsedOpdsUrl = urllib.parse.urlparse(opdsUrl)
 
         # GET the search URL twice: the first time is to get the total number
         # of books in the other calibre.  The second GET gets arguments
         # to retrieve all book ids in the other calibre.
-        parsedCalibreRestSearchUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', '', '')
+        parsedCalibreRestSearchUrl = urllib.parse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', '', '')
         calibreRestSearchUrl = parsedCalibreRestSearchUrl.geturl()
-        calibreRestSearchResponse = urllib2.urlopen(calibreRestSearchUrl)
+        calibreRestSearchResponse = urllib.request.urlopen(calibreRestSearchUrl)
         calibreRestSearchJsonResponse = json.load(calibreRestSearchResponse)
         getAllIdsArgument = 'num=' + str(calibreRestSearchJsonResponse['total_num']) + '&offset=0'
-        parsedCalibreRestSearchUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', getAllIdsArgument, '').geturl()
-        calibreRestSearchResponse = urllib2.urlopen(parsedCalibreRestSearchUrl)
+        parsedCalibreRestSearchUrl = urllib.parse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', getAllIdsArgument, '').geturl()
+        calibreRestSearchResponse = urllib.request.urlopen(parsedCalibreRestSearchUrl)
         calibreRestSearchJsonResponse = json.load(calibreRestSearchResponse)
         bookIds = map(str, calibreRestSearchJsonResponse['book_ids'])
 
         # Get the metadata for all books by adding the list of
         # all IDs as a GET argument
         bookIdsGetArgument = 'ids=' + ','.join(bookIds)
-        parsedCalibreRestBooksUrl = urlparse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/books', '', bookIdsGetArgument, '')
-        calibreRestBooksResponse = urllib2.urlopen(parsedCalibreRestBooksUrl.geturl())
+        parsedCalibreRestBooksUrl = urllib.parse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/books', '', bookIdsGetArgument, '')
+        calibreRestBooksResponse = urllib.request.urlopen(parsedCalibreRestBooksUrl.geturl())
         booksDictionary = json.load(calibreRestBooksResponse)
         self.updateTimestampInMetadata(bookIds, booksDictionary)
 
