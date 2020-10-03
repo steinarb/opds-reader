@@ -4,7 +4,7 @@
 ** What's this?
 This is a calibre plugin that is an OPDS client intended to read the contents of another calibre installation, find the differences to the current calibre and offer to copy books from the other calibre into the current calibre
 ** How do I install it?
-Requires git and calibre installed:
+Requires [[https://git-scm.com/downloads][git]] and [[https://calibre-ebook.com/download][calibre]] installed (minimum calibre version: 5.1.0):
  - Clone the repository:
    #+BEGIN_EXAMPLE
      git clone https://github.com/steinarb/opds-reader.git
