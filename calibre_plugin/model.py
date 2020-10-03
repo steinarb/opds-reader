@@ -145,7 +145,7 @@ class OpdsBooksModel(QAbstractTableModel):
         return metadatalist
 
     def opdsToMetadata(self, opdsBookStructure):
-        authors = opdsBookStructure.author.replace(u'& ', u'&')
+        authors = opdsBookStructure.author.replace(u'& ', u'&') if 'author' in opdsBookStructure else ''
         metadata = Metadata(opdsBookStructure.title, authors.split(u'&'))
         metadata.uuid = opdsBookStructure.id.replace('urn:uuid:', '', 1)
         rawTimestamp = opdsBookStructure.updated
