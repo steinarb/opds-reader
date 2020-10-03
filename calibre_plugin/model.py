@@ -207,7 +207,7 @@ class OpdsBooksModel(QAbstractTableModel):
         parsedCalibreRestSearchUrl = urllib.parse.ParseResult(parsedOpdsUrl.scheme, parsedOpdsUrl.netloc, '/ajax/search', '', getAllIdsArgument, '').geturl()
         calibreRestSearchResponse = urllib.request.urlopen(parsedCalibreRestSearchUrl)
         calibreRestSearchJsonResponse = json.load(calibreRestSearchResponse)
-        bookIds = map(str, calibreRestSearchJsonResponse['book_ids'])
+        bookIds = list(map(str, calibreRestSearchJsonResponse['book_ids']))
 
         # Get the metadata for all books by adding the list of
         # all IDs as a GET argument
