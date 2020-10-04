@@ -147,7 +147,7 @@ class OpdsBooksModel(QAbstractTableModel):
     def opdsToMetadata(self, opdsBookStructure):
         authors = opdsBookStructure.author.replace(u'& ', u'&') if 'author' in opdsBookStructure else ''
         metadata = Metadata(opdsBookStructure.title, authors.split(u'&'))
-        metadata.uuid = opdsBookStructure.id.replace('urn:uuid:', '', 1)
+        metadata.uuid = opdsBookStructure.id.replace('urn:uuid:', '', 1) if 'id' in opdsBookStructure else ''
         rawTimestamp = opdsBookStructure.updated
         parsableTimestamp = re.sub('((\.[0-9]+)?\+0[0-9]:00|Z)$', '', rawTimestamp)
         metadata.timestamp = datetime.datetime.strptime(parsableTimestamp, '%Y-%m-%dT%H:%M:%S')
