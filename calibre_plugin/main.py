@@ -7,7 +7,8 @@ __license__   = "GPL v3"
 
 import sys
 import datetime
-from PyQt5.Qt import Qt, QDialog, QGridLayout, QLineEdit, QComboBox, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QSortFilterProxyModel, QTableView, QHeaderView, QStringListModel
+from PyQt6.QtCore import Qt, QSortFilterProxyModel, QStringListModel
+from PyQt6.QtWidgets import QDialog, QGridLayout, QLineEdit, QComboBox, QPushButton, QCheckBox, QMessageBox, QLabel, QAbstractItemView, QTableView, QHeaderView
 
 from calibre_plugins.opds_client.model import OpdsBooksModel
 from calibre_plugins.opds_client.config import prefs
@@ -102,9 +103,9 @@ class OpdsDialog(QDialog):
         self.library_view = QTableView(self)
         self.library_view.setAlternatingRowColors(True)
         self.library_view.setModel(self.searchproxymodel)
-        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
         self.library_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.resizeAllLibraryViewLinesToHeaderHeight()
         self.library_view.resizeColumnsToContents()
@@ -182,9 +183,9 @@ class OpdsDialog(QDialog):
         self.model.downloadOpdsCatalog(self.gui, opdsCatalogUrl)
         if self.model.isCalibreOpdsServer():
             self.model.downloadMetadataUsingCalibreRestApi(self.opdsUrlEditor.currentText())
-        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
         self.resizeAllLibraryViewLinesToHeaderHeight()
         self.resize(self.sizeHint())
 
