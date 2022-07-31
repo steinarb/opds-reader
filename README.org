@@ -54,6 +54,6 @@ I made this tool to backup my book collection between two PCs in my home LAN, an
         5. The downloaded books will be in approximately the same order as in the original, but the time stamp will be the download time. To fix the time stamp, click on the "Fix timestamps of the selection" button
            - The updated timestamps may not show up immediatly, but they will show up after the first update of the display, and the books will be ordered according to the timestamp after stopping and starting calibre
 ** License
-This calibre plugin is copyright Steinar Bang, 2015, and licensed Under GPL version 3.
+This calibre plugin is copyright Steinar Bang, 2015-2022, and licensed Under GPL version 3.
 
 See the LICENSE file for more detail.
