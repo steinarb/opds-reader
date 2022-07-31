@@ -1,7 +1,7 @@
 """main.py: A GUI to download an OPDS feed, filter out parts of the results, and download selected books from the feed into the local library"""
 
 __author__    = "Steinar Bang"
-__copyright__ = "Steinar Bang, 2015-2020"
+__copyright__ = "Steinar Bang, 2015-2021"
 __credits__   = ["Steinar Bang"]
 __license__   = "GPL v3"
 

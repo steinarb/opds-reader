@@ -1,7 +1,7 @@
 """main.py: Configuration parameter GUI for a Calibre plugin that can read OPDS feeds"""
 
 __author__    = "Steinar Bang"
-__copyright__ = "Steinar Bang, 2015"
+__copyright__ = "Steinar Bang, 2015-2022"
 __credits__   = ["Steinar Bang"]
 __license__   = "GPL v3"
 

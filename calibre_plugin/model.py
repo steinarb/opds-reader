@@ -1,7 +1,7 @@
 """model.py: This is a QAbstractTableModel that holds a list of Metadata objects created from books in an OPDS feed"""
 
 __author__    = "Steinar Bang"
-__copyright__ = "Steinar Bang, 2015-2020"
+__copyright__ = "Steinar Bang, 2015-2022"
 __credits__   = ["Steinar Bang"]
 __license__   = "GPL v3"
 
