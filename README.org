@@ -53,6 +53,22 @@ I made this tool to backup my book collection between two PCs in my home LAN, an
              - The book list will be updated as the books are downloaded
         5. The downloaded books will be in approximately the same order as in the original, but the time stamp will be the download time. To fix the time stamp, click on the "Fix timestamps of the selection" button
            - The updated timestamps may not show up immediatly, but they will show up after the first update of the display, and the books will be ordered according to the timestamp after stopping and starting calibre
+** Troubleshooting
+*** Nothing happens when I click on "Download OPDS" and the URL I typed in isn't preserved
+
+Make sure you press Enter after finishing typing into the URL combo box.  This will download the top OPDS catalog for the OPDS feed.
+
+*** How to I debug the plugin
+
+If the plugin doesn't work for some reason, start calibre in debug mode and see what ends up in the console.
+
+To start calibre in debug mode, open a command line window, and type:
+#+begin_example
+  calibre-debug
+#+end_example
+
+If necessary, add "print()" statements to the code to check that its get to the places you expect it to get and start printing out variables.
+
 ** License
 This calibre plugin is copyright Steinar Bang, 2015-2022, and licensed Under GPL version 3.
 
