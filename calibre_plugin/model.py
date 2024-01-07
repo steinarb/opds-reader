@@ -75,7 +75,10 @@ class OpdsBooksModel(QAbstractTableModel):
                 reason = str(exception.reason)
             error_dialog(gui, _('Failed opening the OPDS URL'), message, reason, displayDialogOnErrors)
             return (None, {})
-        self.serverHeader = feed.headers['server']
+        if 'server' in feed.headers:
+            self.serverHeader = feed.headers['server']
+        else:
+            self.serverHeader = "none"
         print("serverHeader: %s" % self.serverHeader)
         print("feed.entries: %s" % feed.entries)
         catalogEntries = {}
@@ -148,7 +151,10 @@ class OpdsBooksModel(QAbstractTableModel):
         authors = opdsBookStructure.author.replace(u'& ', u'&') if 'author' in opdsBookStructure else ''
         metadata = Metadata(opdsBookStructure.title, authors.split(u'&'))
         metadata.uuid = opdsBookStructure.id.replace('urn:uuid:', '', 1) if 'id' in opdsBookStructure else ''
-        rawTimestamp = opdsBookStructure.updated
+        try:
+            rawTimestamp = opdsBookStructure.updated
+        except AttributeError:
+            rawTimestamp = "1980-01-01T00:00:00+00:00"
         parsableTimestamp = re.sub('((\.[0-9]+)?\+0[0-9]:00|Z)$', '', rawTimestamp)
         metadata.timestamp = datetime.datetime.strptime(parsableTimestamp, '%Y-%m-%dT%H:%M:%S')
         tags = []
