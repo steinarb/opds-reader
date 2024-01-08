@@ -25,6 +25,6 @@ class OpdsInterfacePlugin(InterfaceAction):
         d.show()
 
     def apply_settings(self):
-        from config import prefs
+        from calibre_plugins.opds_client.config import prefs
         prefs
 
